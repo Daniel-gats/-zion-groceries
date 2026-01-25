@@ -1,10 +1,11 @@
-// ===== Zion Groceries - Admin Panel =====
+// ===== Zion Groceries - Admin Panel with Supabase =====
 
-// State
+const SUPABASE_URL = 'https://oadqqddauhmgunibwzls.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9hZHFxZGRhdWhtZ3VuaWJ3emxzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc4MDgwMDAsImV4cCI6MjA1MzM4NDAwMH0.placeholder';
+
 let products = [];
 let editingId = null;
 
-// DOM Elements
 const productForm = document.getElementById('productForm');
 const formTitle = document.getElementById('formTitle');
 const submitBtn = document.getElementById('submitBtn');
@@ -16,32 +17,37 @@ const toast = document.getElementById('toast');
 const toastMessage = document.getElementById('toastMessage');
 const toastIcon = document.getElementById('toastIcon');
 
-// Stats elements
 const totalProducts = document.getElementById('totalProducts');
 const totalVegetables = document.getElementById('totalVegetables');
 const totalFruits = document.getElementById('totalFruits');
 const lowStock = document.getElementById('lowStock');
 
-// Initialize
 document.addEventListener('DOMContentLoaded', () => {
     fetchProducts();
     setupEventListeners();
 });
 
-// Fetch products
 async function fetchProducts() {
     try {
-        const response = await fetch('/api/products');
-        products = await response.json();
-        renderProducts();
-        updateStats();
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/products?select=*&order=id`, {
+            headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`
+            }
+        });
+        if (response.ok) {
+            products = await response.json();
+            renderProducts();
+            updateStats();
+        } else {
+            throw new Error('Failed to fetch');
+        }
     } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error('Error:', error);
         showToast('Error loading products', 'error');
     }
 }
 
-// Render products table
 function renderProducts(productsToRender = products) {
     const searchTerm = searchInput.value.toLowerCase().trim();
     let filtered = productsToRender;
@@ -83,7 +89,7 @@ function renderProducts(productsToRender = products) {
                         </div>
                     </div>
                 </td>
-                <td class="price-cell">KSh ${product.price.toLocaleString()} / ${product.unit}</td>
+                <td class="price-cell">KSh ${Number(product.price).toLocaleString()} / ${product.unit}</td>
                 <td>
                     <div class="stock-cell">
                         <span>${product.stock}</span>
@@ -105,7 +111,6 @@ function renderProducts(productsToRender = products) {
     }).join('');
 }
 
-// Update statistics
 function updateStats() {
     totalProducts.textContent = products.length;
     totalVegetables.textContent = products.filter(p => p.category === 'vegetables').length;
@@ -113,7 +118,6 @@ function updateStats() {
     lowStock.textContent = products.filter(p => p.stock < 20).length;
 }
 
-// Add/Update product
 async function handleSubmit(e) {
     e.preventDefault();
     
@@ -130,47 +134,51 @@ async function handleSubmit(e) {
     try {
         let response;
         if (editingId) {
-            response = await fetch(`/api/products/${editingId}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+            response = await fetch(`${SUPABASE_URL}/rest/v1/products?id=eq.${editingId}`, {
+                method: 'PATCH',
+                headers: {
+                    'apikey': SUPABASE_KEY,
+                    'Authorization': `Bearer ${SUPABASE_KEY}`,
+                    'Content-Type': 'application/json',
+                    'Prefer': 'return=minimal'
+                },
                 body: JSON.stringify(productData)
             });
-            showToast('Product updated successfully!', 'success');
+            showToast('Product updated!', 'success');
         } else {
-            response = await fetch('/api/products', {
+            response = await fetch(`${SUPABASE_URL}/rest/v1/products`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'apikey': SUPABASE_KEY,
+                    'Authorization': `Bearer ${SUPABASE_KEY}`,
+                    'Content-Type': 'application/json',
+                    'Prefer': 'return=minimal'
+                },
                 body: JSON.stringify(productData)
             });
-            showToast('Product added successfully!', 'success');
+            showToast('Product added!', 'success');
         }
         
-        if (response.ok) {
-            resetForm();
-            fetchProducts();
-        } else {
-            throw new Error('Failed to save product');
-        }
+        resetForm();
+        fetchProducts();
     } catch (error) {
-        console.error('Error saving product:', error);
+        console.error('Error:', error);
         showToast('Error saving product', 'error');
     }
 }
 
-// Edit product
 function editProduct(id) {
     const product = products.find(p => p.id === id);
     if (!product) return;
     
     editingId = id;
-    
     document.getElementById('productId').value = id;
     document.getElementById('productName').value = product.name;
     document.getElementById('productPrice').value = product.price;
     document.getElementById('productStock').value = product.stock;
     document.getElementById('productCategory').value = product.category;
     document.getElementById('productUnit').value = product.unit;
-    document.getElementById('productImage').value = product.image;
+    document.getElementById('productImage').value = product.image || '';
     document.getElementById('productDescription').value = product.description || '';
     
     formTitle.innerHTML = '<i class="fas fa-edit"></i> Edit Product';
@@ -180,29 +188,28 @@ function editProduct(id) {
     document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
 }
 
-// Delete product
 async function deleteProduct(id) {
     const product = products.find(p => p.id === id);
     if (!product) return;
     
-    if (!confirm(`Are you sure you want to delete "${product.name}"?`)) return;
+    if (!confirm(`Delete "${product.name}"?`)) return;
     
     try {
-        const response = await fetch(`/api/products/${id}`, { method: 'DELETE' });
-        
-        if (response.ok) {
-            showToast('Product deleted successfully!', 'success');
-            fetchProducts();
-        } else {
-            throw new Error('Failed to delete product');
-        }
+        await fetch(`${SUPABASE_URL}/rest/v1/products?id=eq.${id}`, {
+            method: 'DELETE',
+            headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`
+            }
+        });
+        showToast('Product deleted!', 'success');
+        fetchProducts();
     } catch (error) {
-        console.error('Error deleting product:', error);
+        console.error('Error:', error);
         showToast('Error deleting product', 'error');
     }
 }
 
-// Reset form
 function resetForm() {
     editingId = null;
     productForm.reset();
@@ -212,19 +219,14 @@ function resetForm() {
     cancelBtn.style.display = 'none';
 }
 
-// Show toast
 function showToast(message, type = 'success') {
     toastMessage.textContent = message;
     toast.className = `toast ${type}`;
     toastIcon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
     toast.classList.add('show');
-    
-    setTimeout(() => {
-        toast.classList.remove('show');
-    }, 3000);
+    setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
-// Setup event listeners
 function setupEventListeners() {
     productForm.addEventListener('submit', handleSubmit);
     cancelBtn.addEventListener('click', resetForm);
