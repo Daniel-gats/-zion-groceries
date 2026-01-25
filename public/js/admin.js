@@ -82,7 +82,7 @@ function renderProducts(productsToRender = products) {
             <tr>
                 <td>
                     <div class="product-cell">
-                        <img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/50x50?text=Product'">
+                        <img src="${product.image || 'https://via.placeholder.com/50x50?text=Product'}" alt="${product.name}" onerror="this.onerror=null;this.src='https://via.placeholder.com/50x50?text=No+Image'">
                         <div class="product-cell-info">
                             <h4>${product.name}</h4>
                             <span>${product.category}</span>
