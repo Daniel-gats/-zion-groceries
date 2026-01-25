@@ -1,0 +1,20 @@
+{
+  "name": "zion-groceries",
+  "version": "1.0.0",
+  "description": "Zion Groceries - Online shop for fresh vegetables and fruits",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["groceries", "vegetables", "fruits", "online-shop"],
+  "author": "Zion Groceries",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
