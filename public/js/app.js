@@ -2,7 +2,7 @@
 
 // Supabase Configuration
 const SUPABASE_URL = 'https://oadqqddauhmgunibwzls.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9hZHFxZGRhdWhtZ3VuaWJ3emxzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc4MDgwMDAsImV4cCI6MjA1MzM4NDAwMH0.placeholder';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9hZHFxZGRhdWhtZ3VuaWJ3emxzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzMzIxNDgsImV4cCI6MjA4NDkwODE0OH0.ANp4tmeBlL8DQCDE3LsqhpdSQtbOFoVp6iTxCH5Zfew';
 
 // Configuration
 const CONFIG = {
