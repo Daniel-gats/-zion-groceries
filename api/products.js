@@ -1,0 +1,39 @@
+const fs = require('fs');
+const path = require('path');
+
+// Read products from JSON file
+const getProducts = () => {
+    try {
+        const dataPath = path.join(process.cwd(), 'data', 'products.json');
+        const data = fs.readFileSync(dataPath, 'utf8');
+        return JSON.parse(data);
+    } catch (error) {
+        // Return default products if file not found
+        return [
+            {"id":1,"name":"Fresh Tomatoes","price":80,"category":"vegetables","image":"https://images.unsplash.com/photo-1546470427-0d4db154cde8?w=300&h=300&fit=crop","unit":"kg","stock":50,"description":"Fresh, ripe red tomatoes perfect for salads and cooking"},
+            {"id":2,"name":"Spinach","price":40,"category":"vegetables","image":"https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=300&h=300&fit=crop","unit":"bunch","stock":30,"description":"Fresh green spinach leaves, rich in iron"},
+            {"id":3,"name":"Carrots","price":60,"category":"vegetables","image":"https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=300&h=300&fit=crop","unit":"kg","stock":45,"description":"Crunchy orange carrots, great for juicing or cooking"},
+            {"id":4,"name":"Onions","price":50,"category":"vegetables","image":"https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?w=300&h=300&fit=crop","unit":"kg","stock":60,"description":"Fresh onions, essential for every kitchen"},
+            {"id":5,"name":"Cabbage","price":45,"category":"vegetables","image":"https://images.unsplash.com/photo-1594282486552-05b4d80fbb9f?w=300&h=300&fit=crop","unit":"head","stock":25,"description":"Fresh green cabbage, perfect for salads and stir-fry"},
+            {"id":6,"name":"Green Peppers","price":120,"category":"vegetables","image":"https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=300&h=300&fit=crop","unit":"kg","stock":35,"description":"Crisp green bell peppers"},
+            {"id":7,"name":"Bananas","price":70,"category":"fruits","image":"https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=300&h=300&fit=crop","unit":"bunch","stock":40,"description":"Sweet ripe bananas, rich in potassium"},
+            {"id":8,"name":"Oranges","price":100,"category":"fruits","image":"https://images.unsplash.com/photo-1547514701-42782101795e?w=300&h=300&fit=crop","unit":"kg","stock":55,"description":"Juicy oranges, packed with Vitamin C"},
+            {"id":9,"name":"Apples","price":150,"category":"fruits","image":"https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=300&h=300&fit=crop","unit":"kg","stock":40,"description":"Crisp red apples, sweet and delicious"},
+            {"id":10,"name":"Mangoes","price":80,"category":"fruits","image":"https://images.unsplash.com/photo-1553279768-865429fa0078?w=300&h=300&fit=crop","unit":"kg","stock":30,"description":"Sweet ripe mangoes, the king of fruits"},
+            {"id":11,"name":"Watermelon","price":200,"category":"fruits","image":"https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=300&h=300&fit=crop","unit":"piece","stock":15,"description":"Refreshing watermelon, perfect for hot days"},
+            {"id":12,"name":"Pineapple","price":120,"category":"fruits","image":"https://images.unsplash.com/photo-1550258987-190a2d41a8ba?w=300&h=300&fit=crop","unit":"piece","stock":20,"description":"Sweet tropical pineapple"},
+            {"id":13,"name":"Potatoes","price":55,"category":"vegetables","image":"https://images.unsplash.com/photo-1518977676601-b53f82ber9fb?w=300&h=300&fit=crop","unit":"kg","stock":70,"description":"Fresh potatoes, versatile for any dish"},
+            {"id":14,"name":"Kale (Sukuma Wiki)","price":30,"category":"vegetables","image":"https://images.unsplash.com/photo-1524179091875-bf99a9a6af57?w=300&h=300&fit=crop","unit":"bunch","stock":50,"description":"Fresh kale leaves, a Kenyan favorite"},
+            {"id":15,"name":"Avocados","price":20,"category":"fruits","image":"https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=300&h=300&fit=crop","unit":"piece","stock":45,"description":"Creamy ripe avocados"},
+            {"id":16,"name":"Lemons","price":10,"category":"fruits","image":"https://images.unsplash.com/photo-1590502593747-42a996133562?w=300&h=300&fit=crop","unit":"piece","stock":100,"description":"Fresh lemons for cooking and drinks"}
+        ];
+    }
+};
+
+module.exports = (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Content-Type', 'application/json');
+    
+    const products = getProducts();
+    res.status(200).json(products);
+};
