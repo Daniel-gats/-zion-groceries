@@ -47,10 +47,10 @@ An online shop for fresh vegetables and fruits with WhatsApp ordering.
 ## Configuration
 
 ### WhatsApp Number
-Edit `public/js/app.js` and change the WhatsApp number:
+The WhatsApp number is configured in `public/js/app.js`:
 ```javascript
 const CONFIG = {
-    whatsappNumber: '254700000000', // Change to your number
+    whatsappNumber: '254745562238', // Current WhatsApp number
     currency: 'KSh'
 };
 ```

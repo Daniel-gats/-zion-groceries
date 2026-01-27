@@ -20,6 +20,7 @@ const readProducts = () => {
         const data = fs.readFileSync(dataPath, 'utf8');
         return JSON.parse(data);
     } catch (error) {
+        console.error('Error reading products:', error.message);
         return [];
     }
 };
@@ -49,56 +50,75 @@ app.get('/api/products/:id', (req, res) => {
 
 // Add new product (Admin)
 app.post('/api/products', (req, res) => {
-    const products = readProducts();
-    const newProduct = {
-        id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
-        name: req.body.name,
-        price: parseFloat(req.body.price),
-        category: req.body.category,
-        image: req.body.image || 'https://via.placeholder.com/200x200?text=Product',
-        unit: req.body.unit || 'kg',
-        stock: parseInt(req.body.stock) || 100,
-        description: req.body.description || '',
-        createdAt: new Date().toISOString()
-    };
-    products.push(newProduct);
-    writeProducts(products);
-    res.status(201).json(newProduct);
+    try {
+        if (!req.body.name || !req.body.price || !req.body.category) {
+            return res.status(400).json({ error: 'Name, price, and category are required' });
+        }
+        
+        const products = readProducts();
+        const newProduct = {
+            id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
+            name: req.body.name,
+            price: parseFloat(req.body.price),
+            category: req.body.category,
+            image: req.body.image || 'https://via.placeholder.com/200x200?text=Product',
+            unit: req.body.unit || 'kg',
+            stock: parseInt(req.body.stock) || 100,
+            description: req.body.description || '',
+            createdAt: new Date().toISOString()
+        };
+        products.push(newProduct);
+        writeProducts(products);
+        res.status(201).json(newProduct);
+    } catch (error) {
+        console.error('Error adding product:', error);
+        res.status(500).json({ error: 'Failed to add product' });
+    }
 });
 
 // Update product (Admin)
 app.put('/api/products/:id', (req, res) => {
-    const products = readProducts();
-    const index = products.findIndex(p => p.id === parseInt(req.params.id));
-    if (index !== -1) {
-        products[index] = {
-            ...products[index],
-            name: req.body.name || products[index].name,
-            price: req.body.price !== undefined ? parseFloat(req.body.price) : products[index].price,
-            category: req.body.category || products[index].category,
-            image: req.body.image || products[index].image,
-            unit: req.body.unit || products[index].unit,
-            stock: req.body.stock !== undefined ? parseInt(req.body.stock) : products[index].stock,
-            description: req.body.description !== undefined ? req.body.description : products[index].description,
-            updatedAt: new Date().toISOString()
-        };
-        writeProducts(products);
-        res.json(products[index]);
-    } else {
-        res.status(404).json({ error: 'Product not found' });
+    try {
+        const products = readProducts();
+        const index = products.findIndex(p => p.id === parseInt(req.params.id));
+        if (index !== -1) {
+            products[index] = {
+                ...products[index],
+                name: req.body.name || products[index].name,
+                price: req.body.price !== undefined ? parseFloat(req.body.price) : products[index].price,
+                category: req.body.category || products[index].category,
+                image: req.body.image || products[index].image,
+                unit: req.body.unit || products[index].unit,
+                stock: req.body.stock !== undefined ? parseInt(req.body.stock) : products[index].stock,
+                description: req.body.description !== undefined ? req.body.description : products[index].description,
+                updatedAt: new Date().toISOString()
+            };
+            writeProducts(products);
+            res.json(products[index]);
+        } else {
+            res.status(404).json({ error: 'Product not found' });
+        }
+    } catch (error) {
+        console.error('Error updating product:', error);
+        res.status(500).json({ error: 'Failed to update product' });
     }
 });
 
 // Delete product (Admin)
 app.delete('/api/products/:id', (req, res) => {
-    const products = readProducts();
-    const index = products.findIndex(p => p.id === parseInt(req.params.id));
-    if (index !== -1) {
-        const deleted = products.splice(index, 1);
-        writeProducts(products);
-        res.json({ message: 'Product deleted', product: deleted[0] });
-    } else {
-        res.status(404).json({ error: 'Product not found' });
+    try {
+        const products = readProducts();
+        const index = products.findIndex(p => p.id === parseInt(req.params.id));
+        if (index !== -1) {
+            const deleted = products.splice(index, 1);
+            writeProducts(products);
+            res.json({ message: 'Product deleted', product: deleted[0] });
+        } else {
+            res.status(404).json({ error: 'Product not found' });
+        }
+    } catch (error) {
+        console.error('Error deleting product:', error);
+        res.status(500).json({ error: 'Failed to delete product' });
     }
 });
 
@@ -121,8 +141,19 @@ app.get('/admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// 404 handler
+app.use((req, res) => {
+    res.status(404).json({ error: 'Route not found' });
+});
+
 // Start server
 app.listen(PORT, () => {
     console.log(`🥬 Zion Groceries server running on http://localhost:${PORT}`);
     console.log(`📦 Admin panel available at http://localhost:${PORT}/admin`);
+    console.log(`🏥 Health check at http://localhost:${PORT}/health`);
 });
