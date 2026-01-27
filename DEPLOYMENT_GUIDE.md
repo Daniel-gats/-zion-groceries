@@ -1,4 +1,4 @@
-# 🚀 Zion Groceries - Deployment Guide
+# 🚀 G-man Groceries - Deployment Guide
 
 ## Quick Deployment Options
 
@@ -103,4 +103,4 @@ For issues or questions:
 - Ensure all required files are committed to Git
 
 ---
-Made with ❤️ for Zion Groceries
+Made with ❤️ for G-man Groceries

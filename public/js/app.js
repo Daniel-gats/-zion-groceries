@@ -1,4 +1,4 @@
-// ===== Zion Groceries - Main Application =====
+// ===== G-man Groceries - Main Application =====
 
 // Supabase Configuration
 const SUPABASE_URL = 'https://oadqqddauhmgunibwzls.supabase.co';
@@ -284,7 +284,7 @@ function sendWhatsAppOrder() {
         return;
     }
     
-    let message = '🛒 *New Order from Zion Groceries*\n\n📦 *Order Details:*\n─────────────────\n';
+    let message = '🛒 *New Order from G-man Groceries*\n\n📦 *Order Details:*\n─────────────────\n';
     
     cart.forEach((item, index) => {
         const subtotal = item.price * item.quantity;
@@ -296,6 +296,34 @@ function sendWhatsAppOrder() {
     
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/${CONFIG.whatsappNumber}?text=${encodedMessage}`, '_blank');
+    
+    // Show auto-reply notification
+    showAutoReplyNotification();
+}
+
+// Auto-reply notification system
+function showAutoReplyNotification() {
+    const notification = document.createElement('div');
+    notification.className = 'auto-reply-notification';
+    notification.innerHTML = `
+        <div class="auto-reply-content">
+            <i class="fas fa-robot"></i>
+            <div>
+                <strong>Auto-Reply Activated!</strong>
+                <p>We'll respond to your order within 5-10 minutes. Thank you for your patience! 😊</p>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 100);
+    
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+    }, 5000);
 }
 
 function showToast(message) {

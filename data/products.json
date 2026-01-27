@@ -7,7 +7,7 @@
     "image": "https://images.unsplash.com/photo-1546470427-0d4db154cde8?w=300&h=300&fit=crop",
     "unit": "kg",
     "stock": 50,
-    "description": "Fresh, ripe red tomatoes perfect for salads and cooking"
+    "description": "Fresh ripe red tomatoes"
   },
   {
     "id": 2,
@@ -17,7 +17,7 @@
     "image": "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=300&h=300&fit=crop",
     "unit": "bunch",
     "stock": 30,
-    "description": "Fresh green spinach leaves, rich in iron"
+    "description": "Fresh green spinach leaves"
   },
   {
     "id": 3,
@@ -27,7 +27,7 @@
     "image": "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=300&h=300&fit=crop",
     "unit": "kg",
     "stock": 45,
-    "description": "Crunchy orange carrots, great for juicing or cooking"
+    "description": "Crunchy orange carrots"
   },
   {
     "id": 4,
@@ -37,7 +37,7 @@
     "image": "https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?w=300&h=300&fit=crop",
     "unit": "kg",
     "stock": 60,
-    "description": "Fresh onions, essential for every kitchen"
+    "description": "Fresh red onions"
   },
   {
     "id": 5,
@@ -47,7 +47,7 @@
     "image": "https://images.unsplash.com/photo-1594282486552-05b4d80fbb9f?w=300&h=300&fit=crop",
     "unit": "head",
     "stock": 25,
-    "description": "Fresh green cabbage, perfect for salads and stir-fry"
+    "description": "Fresh green cabbage"
   },
   {
     "id": 6,
@@ -61,56 +61,256 @@
   },
   {
     "id": 7,
+    "name": "Red Peppers",
+    "price": 140,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1526346698789-22fd84314424?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 30,
+    "description": "Sweet red bell peppers"
+  },
+  {
+    "id": 8,
+    "name": "Yellow Peppers",
+    "price": 150,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 25,
+    "description": "Sweet yellow bell peppers"
+  },
+  {
+    "id": 9,
+    "name": "Kale Sukuma Wiki",
+    "price": 30,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1524179091875-bf99a9a6af57?w=300&h=300&fit=crop",
+    "unit": "bunch",
+    "stock": 50,
+    "description": "Fresh kale leaves"
+  },
+  {
+    "id": 10,
+    "name": "Potatoes",
+    "price": 55,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1518977676601-b53f82ber9fb?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 70,
+    "description": "Fresh Irish potatoes"
+  },
+  {
+    "id": 11,
+    "name": "Sweet Potatoes",
+    "price": 65,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1596097635121-14b63b7a0c19?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 55,
+    "description": "Orange sweet potatoes"
+  },
+  {
+    "id": 12,
+    "name": "Garlic",
+    "price": 200,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1540148426945-6cf22a6b2f8e?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 40,
+    "description": "Fresh garlic bulbs"
+  },
+  {
+    "id": 13,
+    "name": "Ginger",
+    "price": 180,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 35,
+    "description": "Fresh ginger root"
+  },
+  {
+    "id": 14,
+    "name": "Cucumber",
+    "price": 40,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?w=300&h=300&fit=crop",
+    "unit": "piece",
+    "stock": 60,
+    "description": "Fresh green cucumber"
+  },
+  {
+    "id": 15,
+    "name": "Lettuce",
+    "price": 50,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1622206151226-18ca2c9ab4a1?w=300&h=300&fit=crop",
+    "unit": "head",
+    "stock": 30,
+    "description": "Fresh iceberg lettuce"
+  },
+  {
+    "id": 16,
+    "name": "Broccoli",
+    "price": 180,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 25,
+    "description": "Fresh green broccoli"
+  },
+  {
+    "id": 17,
+    "name": "Cauliflower",
+    "price": 150,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1568584711075-3d021a7c3ca3?w=300&h=300&fit=crop",
+    "unit": "head",
+    "stock": 20,
+    "description": "Fresh white cauliflower"
+  },
+  {
+    "id": 18,
+    "name": "Eggplant",
+    "price": 80,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1528826007177-f38517ce9a8a?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 40,
+    "description": "Purple eggplant"
+  },
+  {
+    "id": 19,
+    "name": "Zucchini",
+    "price": 90,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1563252722-6434563a985d?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 35,
+    "description": "Fresh green zucchini"
+  },
+  {
+    "id": 20,
+    "name": "Butternut Squash",
+    "price": 70,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1570586437263-ab629fccc818?w=300&h=300&fit=crop",
+    "unit": "piece",
+    "stock": 30,
+    "description": "Sweet butternut squash"
+  },
+  {
+    "id": 21,
+    "name": "Pumpkin",
+    "price": 60,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1509622905150-fa66d3906e09?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 40,
+    "description": "Fresh orange pumpkin"
+  },
+  {
+    "id": 22,
+    "name": "Green Beans",
+    "price": 100,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1567375698348-5d9d5ae99de0?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 35,
+    "description": "Fresh green beans"
+  },
+  {
+    "id": 23,
+    "name": "Mushrooms",
+    "price": 200,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 25,
+    "description": "Fresh button mushrooms"
+  },
+  {
+    "id": 24,
+    "name": "Coriander Dhania",
+    "price": 20,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=300&h=300&fit=crop",
+    "unit": "bunch",
+    "stock": 60,
+    "description": "Fresh coriander leaves"
+  },
+  {
+    "id": 25,
+    "name": "Spring Onions",
+    "price": 25,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=300&h=300&fit=crop",
+    "unit": "bunch",
+    "stock": 50,
+    "description": "Fresh spring onions"
+  },
+  {
+    "id": 26,
     "name": "Bananas",
     "price": 70,
     "category": "fruits",
     "image": "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=300&h=300&fit=crop",
     "unit": "bunch",
     "stock": 40,
-    "description": "Sweet ripe bananas, rich in potassium"
+    "description": "Sweet ripe bananas"
   },
   {
-    "id": 8,
+    "id": 27,
     "name": "Oranges",
     "price": 100,
     "category": "fruits",
     "image": "https://images.unsplash.com/photo-1547514701-42782101795e?w=300&h=300&fit=crop",
     "unit": "kg",
     "stock": 55,
-    "description": "Juicy oranges, packed with Vitamin C"
+    "description": "Juicy oranges"
   },
   {
-    "id": 9,
-    "name": "Apples",
+    "id": 28,
+    "name": "Apples Red",
     "price": 150,
     "category": "fruits",
     "image": "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=300&h=300&fit=crop",
     "unit": "kg",
     "stock": 40,
-    "description": "Crisp red apples, sweet and delicious"
+    "description": "Crisp red apples"
   },
   {
-    "id": 10,
+    "id": 29,
+    "name": "Apples Green",
+    "price": 160,
+    "category": "fruits",
+    "image": "https://images.unsplash.com/photo-1568702846914-96b305d2uj38?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 35,
+    "description": "Crisp green apples"
+  },
+  {
+    "id": 30,
     "name": "Mangoes",
     "price": 80,
     "category": "fruits",
     "image": "https://images.unsplash.com/photo-1553279768-865429fa0078?w=300&h=300&fit=crop",
     "unit": "kg",
     "stock": 30,
-    "description": "Sweet ripe mangoes, the king of fruits"
+    "description": "Sweet ripe mangoes"
   },
   {
-    "id": 11,
+    "id": 31,
     "name": "Watermelon",
     "price": 200,
     "category": "fruits",
     "image": "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=300&h=300&fit=crop",
     "unit": "piece",
     "stock": 15,
-    "description": "Refreshing watermelon, perfect for hot days"
+    "description": "Refreshing watermelon"
   },
   {
-    "id": 12,
+    "id": 32,
     "name": "Pineapple",
     "price": 120,
     "category": "fruits",
@@ -120,27 +320,7 @@
     "description": "Sweet tropical pineapple"
   },
   {
-    "id": 13,
-    "name": "Potatoes",
-    "price": 55,
-    "category": "vegetables",
-    "image": "https://images.unsplash.com/photo-1518977676601-b53f82ber9fb?w=300&h=300&fit=crop",
-    "unit": "kg",
-    "stock": 70,
-    "description": "Fresh potatoes, versatile for any dish"
-  },
-  {
-    "id": 14,
-    "name": "Kale (Sukuma Wiki)",
-    "price": 30,
-    "category": "vegetables",
-    "image": "https://images.unsplash.com/photo-1524179091875-bf99a9a6af57?w=300&h=300&fit=crop",
-    "unit": "bunch",
-    "stock": 50,
-    "description": "Fresh kale leaves, a Kenyan favorite"
-  },
-  {
-    "id": 15,
+    "id": 33,
     "name": "Avocados",
     "price": 20,
     "category": "fruits",
@@ -150,13 +330,323 @@
     "description": "Creamy ripe avocados"
   },
   {
-    "id": 16,
+    "id": 34,
     "name": "Lemons",
     "price": 10,
     "category": "fruits",
     "image": "https://images.unsplash.com/photo-1590502593747-42a996133562?w=300&h=300&fit=crop",
     "unit": "piece",
     "stock": 100,
-    "description": "Fresh lemons for cooking and drinks"
+    "description": "Fresh lemons"
+  },
+  {
+    "id": 35,
+    "name": "Grapes Red",
+    "price": 300,
+    "category": "fruits",
+    "image": "https://images.unsplash.com/photo-1537640538966-79f369143f8f?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 25,
+    "description": "Sweet red grapes"
+  },
+  {
+    "id": 36,
+    "name": "Strawberries",
+    "price": 350,
+    "category": "fruits",
+    "image": "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=300&h=300&fit=crop",
+    "unit": "pack",
+    "stock": 20,
+    "description": "Fresh strawberries"
+  },
+  {
+    "id": 37,
+    "name": "Passion Fruit",
+    "price": 15,
+    "category": "fruits",
+    "image": "https://images.unsplash.com/photo-1604495772376-9657f0035eb5?w=300&h=300&fit=crop",
+    "unit": "piece",
+    "stock": 60,
+    "description": "Sweet passion fruit"
+  },
+  {
+    "id": 38,
+    "name": "Papaya",
+    "price": 100,
+    "category": "fruits",
+    "image": "https://images.unsplash.com/photo-1517282009859-f000ec3b26fe?w=300&h=300&fit=crop",
+    "unit": "piece",
+    "stock": 30,
+    "description": "Ripe papaya"
+  },
+  {
+    "id": 39,
+    "name": "Guava",
+    "price": 80,
+    "category": "fruits",
+    "image": "https://images.unsplash.com/photo-1536511132770-e5058c7e8c46?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 35,
+    "description": "Fresh guava"
+  },
+  {
+    "id": 40,
+    "name": "Coconut",
+    "price": 50,
+    "category": "fruits",
+    "image": "https://images.unsplash.com/photo-1550828520-4cb496926fc9?w=300&h=300&fit=crop",
+    "unit": "piece",
+    "stock": 40,
+    "description": "Fresh coconut"
+  },
+  {
+    "id": 41,
+    "name": "Pears",
+    "price": 180,
+    "category": "fruits",
+    "image": "https://images.unsplash.com/photo-1514756331096-242fdeb70d4a?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 30,
+    "description": "Sweet pears"
+  },
+  {
+    "id": 42,
+    "name": "Peaches",
+    "price": 220,
+    "category": "fruits",
+    "image": "https://images.unsplash.com/photo-1595124221523-5e9aa1a8f428?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 25,
+    "description": "Juicy peaches"
+  },
+  {
+    "id": 43,
+    "name": "Kiwi",
+    "price": 30,
+    "category": "fruits",
+    "image": "https://images.unsplash.com/photo-1585059895524-72359e06133a?w=300&h=300&fit=crop",
+    "unit": "piece",
+    "stock": 50,
+    "description": "Fresh kiwi fruit"
+  },
+  {
+    "id": 44,
+    "name": "Pomegranate",
+    "price": 100,
+    "category": "fruits",
+    "image": "https://images.unsplash.com/photo-1541344999736-83eca272f6fc?w=300&h=300&fit=crop",
+    "unit": "piece",
+    "stock": 30,
+    "description": "Fresh pomegranate"
+  },
+  {
+    "id": 45,
+    "name": "Tangerines",
+    "price": 120,
+    "category": "fruits",
+    "image": "https://images.unsplash.com/photo-1547514701-42782101795e?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 40,
+    "description": "Sweet tangerines"
+  },
+  {
+    "id": 46,
+    "name": "Beetroot",
+    "price": 70,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1518977676601-b53f82ber9fb?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 40,
+    "description": "Fresh red beetroot"
+  },
+  {
+    "id": 47,
+    "name": "Celery",
+    "price": 80,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1580391564590-aeca65c5e2d3?w=300&h=300&fit=crop",
+    "unit": "bunch",
+    "stock": 30,
+    "description": "Fresh celery stalks"
+  },
+  {
+    "id": 48,
+    "name": "Parsley",
+    "price": 25,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=300&h=300&fit=crop",
+    "unit": "bunch",
+    "stock": 50,
+    "description": "Fresh parsley"
+  },
+  {
+    "id": 49,
+    "name": "Mint Leaves",
+    "price": 25,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=300&h=300&fit=crop",
+    "unit": "bunch",
+    "stock": 45,
+    "description": "Fresh mint leaves"
+  },
+  {
+    "id": 50,
+    "name": "Basil",
+    "price": 30,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=300&h=300&fit=crop",
+    "unit": "bunch",
+    "stock": 40,
+    "description": "Fresh basil leaves"
+  },
+  {
+    "id": 51,
+    "name": "Chili Peppers",
+    "price": 100,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1583119022894-919a68a3d0e3?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 40,
+    "description": "Hot chili peppers"
+  },
+  {
+    "id": 52,
+    "name": "Sweet Corn",
+    "price": 30,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=300&h=300&fit=crop",
+    "unit": "piece",
+    "stock": 50,
+    "description": "Fresh sweet corn"
+  },
+  {
+    "id": 53,
+    "name": "Cherry Tomatoes",
+    "price": 120,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1546470427-0d4db154cde8?w=300&h=300&fit=crop",
+    "unit": "pack",
+    "stock": 35,
+    "description": "Sweet cherry tomatoes"
+  },
+  {
+    "id": 54,
+    "name": "Arugula",
+    "price": 120,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=300&h=300&fit=crop",
+    "unit": "bunch",
+    "stock": 25,
+    "description": "Fresh arugula leaves"
+  },
+  {
+    "id": 55,
+    "name": "Okra",
+    "price": 100,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 35,
+    "description": "Fresh okra"
+  },
+  {
+    "id": 56,
+    "name": "Cassava",
+    "price": 50,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1596097635121-14b63b7a0c19?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 45,
+    "description": "Fresh cassava"
+  },
+  {
+    "id": 57,
+    "name": "Arrow Roots",
+    "price": 60,
+    "category": "vegetables",
+    "image": "https://images.unsplash.com/photo-1596097635121-14b63b7a0c19?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 35,
+    "description": "Fresh arrow roots"
+  },
+  {
+    "id": 58,
+    "name": "Plantains",
+    "price": 80,
+    "category": "fruits",
+    "image": "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=300&h=300&fit=crop",
+    "unit": "bunch",
+    "stock": 35,
+    "description": "Fresh plantains"
+  },
+  {
+    "id": 59,
+    "name": "Blueberries",
+    "price": 400,
+    "category": "fruits",
+    "image": "https://images.unsplash.com/photo-1498557850523-fd3d118b962e?w=300&h=300&fit=crop",
+    "unit": "pack",
+    "stock": 15,
+    "description": "Fresh blueberries"
+  },
+  {
+    "id": 60,
+    "name": "Dragon Fruit",
+    "price": 150,
+    "category": "fruits",
+    "image": "https://images.unsplash.com/photo-1527325678964-54921661f888?w=300&h=300&fit=crop",
+    "unit": "piece",
+    "stock": 20,
+    "description": "Exotic dragon fruit"
+  },
+  {
+    "id": 61,
+    "name": "Limes",
+    "price": 10,
+    "category": "fruits",
+    "image": "https://images.unsplash.com/photo-1590502593747-42a996133562?w=300&h=300&fit=crop",
+    "unit": "piece",
+    "stock": 90,
+    "description": "Fresh limes"
+  },
+  {
+    "id": 62,
+    "name": "Grapes Green",
+    "price": 320,
+    "category": "fruits",
+    "image": "https://images.unsplash.com/photo-1537640538966-79f369143f8f?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 25,
+    "description": "Sweet green grapes"
+  },
+  {
+    "id": 63,
+    "name": "Raspberries",
+    "price": 450,
+    "category": "fruits",
+    "image": "https://images.unsplash.com/photo-1577069861033-55d04cec4ef5?w=300&h=300&fit=crop",
+    "unit": "pack",
+    "stock": 15,
+    "description": "Fresh raspberries"
+  },
+  {
+    "id": 64,
+    "name": "Blackberries",
+    "price": 420,
+    "category": "fruits",
+    "image": "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=300&h=300&fit=crop",
+    "unit": "pack",
+    "stock": 15,
+    "description": "Fresh blackberries"
+  },
+  {
+    "id": 65,
+    "name": "Plums",
+    "price": 200,
+    "category": "fruits",
+    "image": "https://images.unsplash.com/photo-1502216488349-0ca7a0c7e391?w=300&h=300&fit=crop",
+    "unit": "kg",
+    "stock": 25,
+    "description": "Fresh plums"
   }
 ]

@@ -1,4 +1,4 @@
-# 🥬 Zion Groceries
+# 🥬 G-man Groceries
 
 An online shop for fresh vegetables and fruits with WhatsApp ordering.
 
@@ -123,4 +123,4 @@ MIT License - Feel free to use for your own projects!
 
 ---
 
-Made with ❤️ for Zion Groceries
+Made with ❤️ for G-man Groceries
