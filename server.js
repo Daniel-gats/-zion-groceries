@@ -153,7 +153,7 @@ app.use((req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-    console.log(`🥬 G-man Groceries server running on http://localhost:${PORT}`);
+    console.log(`🥬 Zion Groceries server running on http://localhost:${PORT}`);
     console.log(`📦 Admin panel available at http://localhost:${PORT}/admin`);
     console.log(`🏥 Health check at http://localhost:${PORT}/health`);
 });
