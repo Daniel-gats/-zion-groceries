@@ -29,6 +29,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function fetchProducts() {
     try {
+        // Try LOCAL SERVER FIRST (for Vercel deployment)
+        try {
+            console.log('🔍 Attempting to load from local server...');
+            const localResponse = await fetch('/api/products');
+            if (localResponse.ok) {
+                const data = await localResponse.json();
+                if (data && data.length > 0) {
+                    products = data;
+                    console.log('✅ Loaded from LOCAL SERVER:', products.length, 'products');
+                    renderProducts();
+                    updateStats();
+                    return;
+                }
+            }
+        } catch (localError) {
+            console.log('⚠️ Local server not available:', localError.message);
+        }
+        
+        // Try Supabase as backup
         const response = await fetch(`${SUPABASE_URL}/rest/v1/products?select=*&order=id`, {
             headers: {
                 'apikey': SUPABASE_KEY,
@@ -37,6 +56,7 @@ async function fetchProducts() {
         });
         if (response.ok) {
             products = await response.json();
+            console.log('✅ Loaded from Supabase:', products.length, 'products');
             renderProducts();
             updateStats();
         } else {
@@ -133,6 +153,38 @@ async function handleSubmit(e) {
     
     try {
         let response;
+        // Try LOCAL API FIRST
+        try {
+            if (editingId) {
+                response = await fetch(`/api/products/${editingId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(productData)
+                });
+                if (response.ok) {
+                    showToast('Product updated!', 'success');
+                    resetForm();
+                    fetchProducts();
+                    return;
+                }
+            } else {
+                response = await fetch('/api/products', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(productData)
+                });
+                if (response.ok) {
+                    showToast('Product added!', 'success');
+                    resetForm();
+                    fetchProducts();
+                    return;
+                }
+            }
+        } catch (localError) {
+            console.log('⚠️ Local API not available, trying Supabase...');
+        }
+        
+        // Fallback to Supabase
         if (editingId) {
             response = await fetch(`${SUPABASE_URL}/rest/v1/products?id=eq.${editingId}`, {
                 method: 'PATCH',
@@ -195,6 +247,21 @@ async function deleteProduct(id) {
     if (!confirm(`Delete "${product.name}"?`)) return;
     
     try {
+        // Try LOCAL API FIRST
+        try {
+            const response = await fetch(`/api/products/${id}`, {
+                method: 'DELETE'
+            });
+            if (response.ok) {
+                showToast('Product deleted!', 'success');
+                fetchProducts();
+                return;
+            }
+        } catch (localError) {
+            console.log('⚠️ Local API not available, trying Supabase...');
+        }
+        
+        // Fallback to Supabase
         await fetch(`${SUPABASE_URL}/rest/v1/products?id=eq.${id}`, {
             method: 'DELETE',
             headers: {
