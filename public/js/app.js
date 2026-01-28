@@ -61,14 +61,34 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
 });
 
-// Fetch products from Supabase or fallback
+// Fetch products from local server, Supabase, or fallback
 async function fetchProducts() {
     try {
         loading.style.display = 'block';
         productsGrid.style.display = 'none';
         
-        // Try Supabase first
+        // Try LOCAL SERVER FIRST (highest priority)
         try {
+            console.log('🔍 Attempting to load from local server...');
+            const localResponse = await fetch('/api/products');
+            if (localResponse.ok) {
+                const data = await localResponse.json();
+                if (data && data.length > 0) {
+                    products = data;
+                    console.log('✅ Loaded from LOCAL SERVER:', products.length, 'products');
+                    loading.style.display = 'none';
+                    productsGrid.style.display = 'grid';
+                    renderProducts();
+                    return;
+                }
+            }
+        } catch (localError) {
+            console.log('⚠️ Local server not available:', localError.message);
+        }
+        
+        // Try Supabase as backup
+        try {
+            console.log('🔍 Attempting to load from Supabase...');
             const response = await fetch(`${SUPABASE_URL}/rest/v1/products?select=*`, {
                 headers: {
                     'apikey': SUPABASE_KEY,
@@ -80,22 +100,24 @@ async function fetchProducts() {
                 if (data && data.length > 0) {
                     products = data;
                     console.log('✅ Loaded from Supabase:', products.length, 'products');
-                } else {
-                    throw new Error('No products in database');
+                    loading.style.display = 'none';
+                    productsGrid.style.display = 'grid';
+                    renderProducts();
+                    return;
                 }
-            } else {
-                throw new Error('Supabase not available');
             }
-        } catch (apiError) {
-            console.log('Using fallback products:', apiError.message);
-            products = PRODUCTS_DATA;
+        } catch (supabaseError) {
+            console.log('⚠️ Supabase not available:', supabaseError.message);
         }
         
+        // Use hardcoded fallback data as last resort
+        console.log('⚠️ Using FALLBACK data:', PRODUCTS_DATA.length, 'products');
+        products = PRODUCTS_DATA;
         loading.style.display = 'none';
         productsGrid.style.display = 'grid';
         renderProducts();
     } catch (error) {
-        console.error('Error:', error);
+        console.error('❌ Error loading products:', error);
         products = PRODUCTS_DATA;
         loading.style.display = 'none';
         productsGrid.style.display = 'grid';
