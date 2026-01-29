@@ -306,7 +306,7 @@ function sendWhatsAppOrder() {
         return;
     }
     
-    let message = '🛒 *New Order from Zion Groceries*\n\n📦 *Order Details:*\n─────────────────\n';
+    let message = '🛒 *New Order from G-man Groceries*\n\n📦 *Order Details:*\n─────────────────\n';
     
     cart.forEach((item, index) => {
         const subtotal = item.price * item.quantity;

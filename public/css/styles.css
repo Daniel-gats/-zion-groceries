@@ -1,23 +1,24 @@
 /* ===== CSS Variables ===== */
 :root {
-    --primary-color: #10b981;
-    --primary-light: #34d399;
-    --primary-dark: #059669;
-    --secondary-color: #f59e0b;
-    --accent-color: #8b5cf6;
+    --primary-color: #ff6b35;
+    --primary-light: #ff8c5a;
+    --primary-dark: #e6522d;
+    --secondary-color: #4ecdc4;
+    --accent-color: #ffe66d;
     --success-color: #10b981;
     --danger-color: #ef4444;
-    --background: #f9fafb;
+    --background: #fff5f0;
     --white: #ffffff;
-    --text-dark: #1f2937;
-    --text-light: #6b7280;
-    --border-color: #e5e7eb;
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    --radius: 12px;
+    --text-dark: #2d3436;
+    --text-light: #636e72;
+    --border-color: #ffd6cc;
+    --shadow: 0 4px 6px -1px rgba(255, 107, 53, 0.15), 0 2px 4px -1px rgba(255, 107, 53, 0.1);
+    --shadow-lg: 0 25px 50px -12px rgba(255, 107, 53, 0.3);
+    --radius: 16px;
     --transition: all 0.3s ease;
-    --gradient-primary: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    --gradient-secondary: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    --gradient-primary: linear-gradient(135deg, #ff6b35 0%, #ff8c5a 100%);
+    --gradient-secondary: linear-gradient(135deg, #4ecdc4 0%, #44a89d 100%);
+    --gradient-accent: linear-gradient(135deg, #ffe66d 0%, #ffda44 100%);
 }
 
 /* ===== Reset & Base ===== */
@@ -32,6 +33,21 @@ body {
     background-color: var(--background);
     color: var(--text-dark);
     line-height: 1.6;
+    position: relative;
+}
+
+body::before {
+    content: 'G';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 60vw;
+    font-weight: 900;
+    color: rgba(255, 107, 53, 0.03);
+    z-index: -1;
+    pointer-events: none;
+    font-family: 'Poppins', sans-serif;
 }
 
 .container {
