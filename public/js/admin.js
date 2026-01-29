@@ -31,20 +31,18 @@ async function fetchProducts() {
     try {
         // Try LOCAL SERVER FIRST (for Vercel deployment)
         try {
-            console.log('🔍 Attempting to load from local server...');
             const localResponse = await fetch('/api/products');
             if (localResponse.ok) {
                 const data = await localResponse.json();
                 if (data && data.length > 0) {
                     products = data;
-                    console.log('✅ Loaded from LOCAL SERVER:', products.length, 'products');
                     renderProducts();
                     updateStats();
                     return;
                 }
             }
         } catch (localError) {
-            console.log('⚠️ Local server not available:', localError.message);
+            // Local server not available, try Supabase
         }
         
         // Try Supabase as backup
@@ -56,14 +54,12 @@ async function fetchProducts() {
         });
         if (response.ok) {
             products = await response.json();
-            console.log('✅ Loaded from Supabase:', products.length, 'products');
             renderProducts();
             updateStats();
         } else {
             throw new Error('Failed to fetch');
         }
     } catch (error) {
-        console.error('Error:', error);
         showToast('Error loading products', 'error');
     }
 }
@@ -181,7 +177,7 @@ async function handleSubmit(e) {
                 }
             }
         } catch (localError) {
-            console.log('⚠️ Local API not available, trying Supabase...');
+            // Local API not available, try Supabase
         }
         
         // Fallback to Supabase
@@ -214,7 +210,6 @@ async function handleSubmit(e) {
         resetForm();
         fetchProducts();
     } catch (error) {
-        console.error('Error:', error);
         showToast('Error saving product', 'error');
     }
 }
@@ -258,7 +253,7 @@ async function deleteProduct(id) {
                 return;
             }
         } catch (localError) {
-            console.log('⚠️ Local API not available, trying Supabase...');
+            // Local API not available, try Supabase
         }
         
         // Fallback to Supabase
@@ -272,7 +267,6 @@ async function deleteProduct(id) {
         showToast('Product deleted!', 'success');
         fetchProducts();
     } catch (error) {
-        console.error('Error:', error);
         showToast('Error deleting product', 'error');
     }
 }

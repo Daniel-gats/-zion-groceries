@@ -69,13 +69,11 @@ async function fetchProducts() {
         
         // Try LOCAL SERVER FIRST (highest priority)
         try {
-            console.log('🔍 Attempting to load from local server...');
             const localResponse = await fetch('/api/products');
             if (localResponse.ok) {
                 const data = await localResponse.json();
                 if (data && data.length > 0) {
                     products = data;
-                    console.log('✅ Loaded from LOCAL SERVER:', products.length, 'products');
                     loading.style.display = 'none';
                     productsGrid.style.display = 'grid';
                     renderProducts();
@@ -83,12 +81,11 @@ async function fetchProducts() {
                 }
             }
         } catch (localError) {
-            console.log('⚠️ Local server not available:', localError.message);
+            // Local server not available, try next option
         }
         
         // Try Supabase as backup
         try {
-            console.log('🔍 Attempting to load from Supabase...');
             const response = await fetch(`${SUPABASE_URL}/rest/v1/products?select=*`, {
                 headers: {
                     'apikey': SUPABASE_KEY,
@@ -99,7 +96,6 @@ async function fetchProducts() {
                 const data = await response.json();
                 if (data && data.length > 0) {
                     products = data;
-                    console.log('✅ Loaded from Supabase:', products.length, 'products');
                     loading.style.display = 'none';
                     productsGrid.style.display = 'grid';
                     renderProducts();
@@ -107,17 +103,16 @@ async function fetchProducts() {
                 }
             }
         } catch (supabaseError) {
-            console.log('⚠️ Supabase not available:', supabaseError.message);
+            // Supabase not available, use fallback
         }
         
         // Use hardcoded fallback data as last resort
-        console.log('⚠️ Using FALLBACK data:', PRODUCTS_DATA.length, 'products');
         products = PRODUCTS_DATA;
         loading.style.display = 'none';
         productsGrid.style.display = 'grid';
         renderProducts();
     } catch (error) {
-        console.error('❌ Error loading products:', error);
+        // Error loading products, use fallback data
         products = PRODUCTS_DATA;
         loading.style.display = 'none';
         productsGrid.style.display = 'grid';
