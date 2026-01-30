@@ -76,6 +76,8 @@ button {
     top: 0;
     z-index: 100;
     border-bottom: 3px solid var(--secondary-color);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .header-content {
@@ -153,9 +155,10 @@ button {
 }
 
 .search-box input:focus {
-    border-color: var(--primary-color);
+    border-color: var(--secondary-color);
     outline: none;
     width: 250px;
+    box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.1);
 }
 
 .search-box i {
@@ -182,7 +185,8 @@ button {
 
 .cart-btn:hover {
     background: var(--primary-dark);
-    transform: scale(1.05);
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4);
 }
 
 .cart-count {
@@ -313,11 +317,13 @@ button {
     overflow: hidden;
     box-shadow: var(--shadow);
     transition: var(--transition);
+    border: 2px solid transparent;
 }
 
 .product-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px) scale(1.02);
     box-shadow: var(--shadow-lg);
+    border-color: var(--secondary-color);
 }
 
 .product-image {
@@ -330,11 +336,11 @@ button {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: var(--transition);
+    transition: transform 0.5s ease;
 }
 
 .product-card:hover .product-image img {
-    transform: scale(1.1);
+    transform: scale(1.15) rotate(2deg);
 }
 
 .product-category {
@@ -437,6 +443,8 @@ button {
 
 .add-to-cart:hover {
     background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
 }
 
 /* ===== Loading & No Products ===== */
@@ -652,6 +660,8 @@ button {
 
 .btn-whatsapp:hover {
     background: #128c7e;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(37, 211, 102, 0.3);
 }
 
 .btn-clear {
@@ -665,6 +675,7 @@ button {
 .btn-clear:hover {
     background: #dc3545;
     color: var(--white);
+    transform: translateY(-2px);
 }
 
 /* ===== Footer ===== */
