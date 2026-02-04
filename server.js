@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -10,6 +11,12 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
+
+// Import routes
+const authRoutes = require('./routes/auth');
+const orderRoutes = require('./routes/orders');
+const reviewRoutes = require('./routes/reviews');
+const mpesaRoutes = require('./routes/mpesa');
 
 // Data file path
 const dataPath = path.join(__dirname, 'data', 'products.json');
@@ -129,6 +136,21 @@ app.get('/api/products/category/:category', (req, res) => {
         p.category.toLowerCase() === req.params.category.toLowerCase()
     );
     res.json(filtered);
+});
+
+// Mount API routes
+app.use('/api/auth', authRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/mpesa', mpesaRoutes);
+
+// Serve static files with explicit routes
+app.get('/js/:file', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'js', req.params.file));
+});
+
+app.get('/css/:file', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'css', req.params.file));
 });
 
 // Serve main page
