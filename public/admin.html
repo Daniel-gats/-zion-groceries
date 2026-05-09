@@ -1,610 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - G-man Groceries</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #2d6a4f;
-            --primary-light: #40916c;
-            --primary-dark: #1b4332;
-            --secondary-color: #ff6b35;
-            --background: #f8f9fa;
-            --white: #ffffff;
-            --text-dark: #212529;
-            --text-light: #6c757d;
-            --border-color: #dee2e6;
-            --danger: #dc3545;
-            --success: #28a745;
-            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            --radius: 12px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--background);
-            color: var(--text-dark);
-            line-height: 1.6;
-        }
-
-        .admin-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Header */
-        .admin-header {
-            background: var(--white);
-            padding: 20px 30px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .admin-header h1 {
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .admin-header a {
-            color: var(--primary-color);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-weight: 500;
-        }
-
-        .admin-header a:hover {
-            color: var(--primary-dark);
-        }
-
-        /* Stats */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: var(--white);
-            padding: 25px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            text-align: center;
-        }
-
-        .stat-card i {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            margin-bottom: 10px;
-        }
-
-        .stat-card h3 {
-            font-size: 2rem;
-            color: var(--text-dark);
-        }
-
-        .stat-card p {
-            color: var(--text-light);
-        }
-
-        /* Main Content */
-        .admin-content {
-            display: grid;
-            grid-template-columns: 400px 1fr;
-            gap: 30px;
-        }
-
-        @media (max-width: 1024px) {
-            .admin-content {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Form Section */
-        .form-section {
-            background: var(--white);
-            padding: 30px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            height: fit-content;
-            position: sticky;
-            top: 20px;
-        }
-
-        .form-section h2 {
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--text-dark);
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 1rem;
-            font-family: inherit;
-            transition: border-color 0.3s;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary-color);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: inherit;
-        }
-
-        .btn-primary {
-            background: var(--primary-color);
-            color: var(--white);
-            width: 100%;
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-        }
-
-        .btn-secondary {
-            background: var(--border-color);
-            color: var(--text-dark);
-        }
-
-        .btn-secondary:hover {
-            background: var(--text-light);
-            color: var(--white);
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: var(--white);
-        }
-
-        .btn-danger:hover {
-            background: #c82333;
-        }
-
-        .btn-sm {
-            padding: 8px 15px;
-            font-size: 0.85rem;
-        }
-
-        .form-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .form-buttons .btn {
-            flex: 1;
-        }
-
-        /* Products Table */
-        .products-section {
-            background: var(--white);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-        }
-
-        .products-header {
-            padding: 20px 25px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .products-header h2 {
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .search-box {
-            position: relative;
-        }
-
-        .search-box input {
-            padding: 10px 40px 10px 15px;
-            border: 2px solid var(--border-color);
-            border-radius: 25px;
-            font-size: 0.9rem;
-            width: 250px;
-        }
-
-        .search-box input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-        }
-
-        .search-box i {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-light);
-        }
-
-        .products-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .products-table th,
-        .products-table td {
-            padding: 15px 20px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .products-table th {
-            background: var(--background);
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .products-table tr:hover {
-            background: var(--background);
-        }
-
-        .product-cell {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .product-cell img {
-            width: 50px;
-            height: 50px;
-            border-radius: 8px;
-            object-fit: cover;
-        }
-
-        .product-cell-info h4 {
-            font-size: 0.95rem;
-            margin-bottom: 2px;
-        }
-
-        .product-cell-info span {
-            font-size: 0.8rem;
-            color: var(--text-light);
-            text-transform: capitalize;
-        }
-
-        .price-cell {
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-
-        .stock-cell {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .stock-badge {
-            padding: 4px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-
-        .stock-badge.in-stock {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .stock-badge.low-stock {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .stock-badge.out-stock {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .actions-cell {
-            display: flex;
-            gap: 8px;
-        }
-
-        .btn-icon {
-            width: 35px;
-            height: 35px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-edit {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
-
-        .btn-edit:hover {
-            background: #1976d2;
-            color: var(--white);
-        }
-
-        .btn-delete {
-            background: #ffebee;
-            color: var(--danger);
-        }
-
-        .btn-delete:hover {
-            background: var(--danger);
-            color: var(--white);
-        }
-
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--text-light);
-        }
-
-        .empty-state i {
-            font-size: 4rem;
-            margin-bottom: 15px;
-            color: var(--border-color);
-        }
-
-        /* Toast */
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            padding: 15px 25px;
-            border-radius: 8px;
-            color: var(--white);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: var(--shadow);
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.3s;
-            z-index: 1000;
-        }
-
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .toast.success {
-            background: var(--success);
-        }
-
-        .toast.error {
-            background: var(--danger);
-        }
-
-        /* Responsive Table */
-        @media (max-width: 768px) {
-            .products-table {
-                display: block;
-                overflow-x: auto;
-            }
-
-            .admin-header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .products-header {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .search-box input {
-                width: 100%;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zion Groceries Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root { --green:#1f6f43; --green-dark:#12482b; --orange:#f59e0b; --bg:#f5f7f2; --card:#fff; --line:#dce6d9; --text:#173126; --muted:#6a7a71; --danger:#dc2626; }
+    *{box-sizing:border-box} body{margin:0;font-family:Poppins,sans-serif;background:var(--bg);color:var(--text)}
+    .page{max-width:1440px;margin:0 auto;padding:24px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px}.top a{color:var(--green);text-decoration:none;font-weight:600}
+    .hero{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:22px}.card,.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:0 16px 40px rgba(18,72,43,.06)}
+    .card{padding:18px}.card .value{font-size:1.9rem;font-weight:700}.card .label{color:var(--muted);font-size:.92rem}.layout{display:grid;grid-template-columns:360px 1fr;gap:20px}.panel{padding:20px}
+    .section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.section-title h2{margin:0;font-size:1.08rem}
+    .form-grid{display:grid;gap:12px}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{font-size:.86rem;font-weight:600;display:block;margin-bottom:6px}
+    input,select,textarea{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:12px;font:inherit;background:#fff}textarea{min-height:100px;resize:vertical}
+    .btn{border:none;border-radius:999px;padding:12px 16px;font:inherit;font-weight:700;cursor:pointer}.btn-primary{background:var(--green);color:#fff}.btn-outline{background:#fff;border:1px solid var(--line)}.btn-danger{background:var(--danger);color:#fff}
+    .stack{display:flex;gap:10px;flex-wrap:wrap}.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse}.table th,.table td{padding:12px;border-bottom:1px solid var(--line);text-align:left;font-size:.92rem;vertical-align:top}.pill{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;font-size:.78rem;font-weight:700}
+    .ok{background:#dcfce7;color:#166534}.warn{background:#fef3c7;color:#92400e}.bad{background:#fee2e2;color:#991b1b}.muted{color:var(--muted)}.small{font-size:.82rem}.product-row{display:flex;align-items:center;gap:10px}.product-row img{width:48px;height:48px;object-fit:cover;border-radius:10px;background:#eef2ea}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}.grow{flex:1}.order-box{border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}.order-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}.order-meta{display:grid;gap:6px;font-size:.88rem}.bulk-area{min-height:160px}.toast{position:fixed;right:20px;bottom:20px;background:var(--green);color:#fff;padding:12px 16px;border-radius:12px;opacity:0;transform:translateY(20px);transition:.2s}.toast.show{opacity:1;transform:none}
+    .access-grid,.ops-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:20px}.user-meta{display:grid;gap:4px}.inline-form{display:flex;gap:10px;flex-wrap:wrap}.inline-form input{flex:1;min-width:200px}.report-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}.mini-card{border:1px solid var(--line);border-radius:16px;padding:14px;background:#fafcf9}.mini-card strong{display:block;font-size:1.2rem}.alert-list,.report-list{display:grid;gap:10px}.alert-item,.report-item{display:flex;justify-content:space-between;gap:12px;padding:12px;border:1px solid var(--line);border-radius:14px;background:#fff}.report-item .muted,.alert-item .muted{display:block}
+    @media (max-width:1100px){.layout,.access-grid,.ops-grid,.report-grid{grid-template-columns:1fr}.hero{grid-template-columns:repeat(3,1fr)}} @media (max-width:700px){.hero{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}.top{flex-direction:column;align-items:flex-start}.inline-form{flex-direction:column}}
+  </style>
 </head>
 <body>
-    <div class="admin-container">
-        <!-- Header -->
-        <header class="admin-header">
-            <h1><i class="fas fa-leaf"></i> G-man Groceries Admin</h1>
-            <a href="/"><i class="fas fa-store"></i> View Shop</a>
-        </header>
-
-        <!-- Stats -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <i class="fas fa-box"></i>
-                <h3 id="totalProducts">0</h3>
-                <p>Total Products</p>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-carrot"></i>
-                <h3 id="totalVegetables">0</h3>
-                <p>Vegetables</p>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-apple-alt"></i>
-                <h3 id="totalFruits">0</h3>
-                <p>Fruits</p>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-exclamation-triangle"></i>
-                <h3 id="lowStock">0</h3>
-                <p>Low Stock Items</p>
-            </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="admin-content">
-            <!-- Form Section -->
-            <div class="form-section">
-                <h2 id="formTitle"><i class="fas fa-plus-circle"></i> Add New Product</h2>
-                <form id="productForm">
-                    <input type="hidden" id="productId">
-                    
-                    <div class="form-group">
-                        <label for="productName">Product Name *</label>
-                        <input type="text" id="productName" required placeholder="e.g., Fresh Tomatoes">
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="productPrice">Price (KSh) *</label>
-                            <input type="number" id="productPrice" required min="0" step="0.01" placeholder="e.g., 100">
-                        </div>
-                        <div class="form-group">
-                            <label for="productStock">Stock *</label>
-                            <input type="number" id="productStock" required min="0" placeholder="e.g., 50">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="productCategory">Category *</label>
-                            <select id="productCategory" required>
-                                <option value="">Select category</option>
-                                <option value="vegetables">Vegetables</option>
-                                <option value="fruits">Fruits</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="productUnit">Unit</label>
-                            <select id="productUnit">
-                                <option value="kg">Kilogram (kg)</option>
-                                <option value="piece">Piece</option>
-                                <option value="bunch">Bunch</option>
-                                <option value="pack">Pack</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="productImage">Image URL</label>
-                        <input type="url" id="productImage" placeholder="https://example.com/image.jpg">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="productDescription">Description</label>
-                        <textarea id="productDescription" placeholder="Brief description of the product..."></textarea>
-                    </div>
-
-                    <div class="form-buttons">
-                        <button type="submit" class="btn btn-primary" id="submitBtn">
-                            <i class="fas fa-plus"></i> Add Product
-                        </button>
-                        <button type="button" class="btn btn-secondary" id="cancelBtn" style="display: none;">
-                            Cancel
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Products Table -->
-            <div class="products-section">
-                <div class="products-header">
-                    <h2><i class="fas fa-list"></i> Products List</h2>
-                    <div class="search-box">
-                        <input type="text" id="searchProducts" placeholder="Search products...">
-                        <i class="fas fa-search"></i>
-                    </div>
-                </div>
-                <table class="products-table">
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Price</th>
-                            <th>Stock</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="productsTableBody">
-                        <!-- Products will be loaded here -->
-                    </tbody>
-                </table>
-                <div class="empty-state" id="emptyState" style="display: none;">
-                    <i class="fas fa-box-open"></i>
-                    <p>No products found</p>
-                </div>
-            </div>
-        </div>
+  <div class="page">
+    <div id="authNotice" class="panel" style="display:none;margin-bottom:20px"><strong id="authNoticeTitle">Admin access required.</strong><div id="authNoticeText" class="muted small" style="margin-top:6px">You need to log in with an admin account to manage products and orders.</div><div class="stack" style="margin-top:12px"><button id="bootstrapAdminBtn" class="btn btn-primary" type="button" style="display:none">Make This Account Admin</button><a id="loginRedirectBtn" class="btn btn-outline" href="login.html?return=admin.html" style="display:none">Go to Login</a></div></div>
+    <div class="top">
+      <div>
+        <h1 style="margin:0">Zion Groceries Admin</h1>
+        <div class="muted small">Products, stock, orders, and checkout operations</div>
+      </div>
+      <div class="stack">
+        <a href="my-orders.html"><i class="fas fa-box"></i> My Orders</a>
+        <a href="index.html"><i class="fas fa-store"></i> View Shop</a>
+      </div>
     </div>
 
-    <!-- Toast -->
-    <div class="toast" id="toast">
-        <i class="fas fa-check-circle" id="toastIcon"></i>
-        <span id="toastMessage">Success!</span>
+    <div class="hero">
+      <div class="card"><div class="value" id="totalProducts">0</div><div class="label">Active Products</div></div>
+      <div class="card"><div class="value" id="totalOrders">0</div><div class="label">Total Orders</div></div>
+      <div class="card"><div class="value" id="pendingOrders">0</div><div class="label">Pending Orders</div></div>
+      <div class="card"><div class="value" id="lowStock">0</div><div class="label">Low Stock</div></div>
+      <div class="card"><div class="value" id="outOfStock">0</div><div class="label">Out of Stock</div></div>
+      <div class="card"><div class="value" id="revenue">KSh 0</div><div class="label">Revenue</div></div>
     </div>
 
-    <script src="js/admin.js"></script>
+    <div class="layout">
+      <div class="panel">
+        <div class="section-title"><h2 id="formTitle">Add Product</h2></div>
+        <form id="productForm" class="form-grid">
+          <input type="hidden" id="productId">
+          <div><label>Product Name</label><input id="productName" required></div>
+          <div class="two">
+            <div><label>Price</label><input id="productPrice" type="number" min="0" step="0.01" required></div>
+            <div><label>Stock</label><input id="productStock" type="number" min="0" required></div>
+          </div>
+          <div class="two">
+            <div><label>Category</label><select id="productCategory" required><option value="vegetables">Vegetables</option><option value="fruits">Fruits</option><option value="dairy">Dairy</option><option value="snacks">Snacks</option><option value="beverages">Beverages</option><option value="staples">Staples</option><option value="bakery">Bakery</option></select></div>
+            <div><label>Unit</label><select id="productUnit"><option value="kg">kg</option><option value="piece">piece</option><option value="bunch">bunch</option><option value="pack">pack</option><option value="loaf">loaf</option><option value="tray">tray</option></select></div>
+          </div>
+          <div><label>Image URL</label><input id="productImage"></div>
+          <div><label>Description</label><textarea id="productDescription"></textarea></div>
+          <div><label><input type="checkbox" id="productActive" checked> Show in storefront</label></div>
+          <div class="stack"><button class="btn btn-primary" type="submit" id="submitBtn">Save Product</button><button class="btn btn-outline" type="button" id="cancelBtn" style="display:none">Cancel</button></div>
+        </form>
+
+        <div style="height:1px;background:var(--line);margin:20px 0"></div>
+
+        <div class="section-title"><h2>Bulk Upload</h2></div>
+        <div class="small muted" style="margin-bottom:8px">Paste a JSON array of products to import or update.</div>
+        <textarea id="bulkJson" class="bulk-area" placeholder='[{"name":"Sample Bread","price":95,"category":"bakery","unit":"loaf","stock":20}]'></textarea>
+        <div class="stack" style="margin-top:10px"><button class="btn btn-outline" id="bulkImportBtn" type="button">Import JSON</button></div>
+      </div>
+
+      <div style="display:grid;gap:20px">
+        <div class="panel">
+          <div class="section-title"><h2>Products</h2></div>
+          <div class="toolbar">
+            <input class="grow" id="searchProducts" placeholder="Search products...">
+            <select id="filterVisibility"><option value="all">All Visibility</option><option value="active">Visible</option><option value="hidden">Hidden</option><option value="out">Out of Stock</option></select>
+          </div>
+          <div class="table-wrap">
+            <table class="table"><thead><tr><th>Product</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead><tbody id="productsTableBody"></tbody></table>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="section-title"><h2>Operations</h2><select id="salesRange"><option value="7d">Last 7 days</option><option value="30d" selected>Last 30 days</option><option value="all">All time</option></select></div>
+          <div class="report-grid">
+            <div class="mini-card"><div class="muted small">Orders in Range</div><strong id="reportOrders">0</strong></div>
+            <div class="mini-card"><div class="muted small">Average Order</div><strong id="reportAverage">KSh 0</strong></div>
+            <div class="mini-card"><div class="muted small">Delivered</div><strong id="reportDelivered">0</strong></div>
+          </div>
+          <div class="ops-grid">
+            <div>
+              <div class="section-title"><h2 style="font-size:1rem">Inventory Alerts</h2></div>
+              <div id="inventoryAlerts" class="alert-list"></div>
+            </div>
+            <div>
+              <div class="section-title"><h2 style="font-size:1rem">Top Products</h2></div>
+              <div id="topProducts" class="report-list"></div>
+            </div>
+          </div>
+          <div class="ops-grid" style="margin-top:16px">
+            <div>
+              <div class="section-title"><h2 style="font-size:1rem">Category Revenue</h2></div>
+              <div id="categoryRevenue" class="report-list"></div>
+            </div>
+            <div>
+              <div class="section-title"><h2 style="font-size:1rem">Payment Mix</h2></div>
+              <div id="paymentBreakdown" class="report-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="section-title"><h2>Orders</h2></div>
+          <div class="toolbar">
+            <input class="grow" id="searchOrders" placeholder="Search by order ID, name, or phone...">
+            <select id="filterOrderStatus"><option value="all">All Statuses</option><option value="pending">Pending</option><option value="sourcing">Sourcing</option><option value="quoted">Quoted</option><option value="confirmed">Confirmed</option><option value="preparing">Preparing</option><option value="delivery">Out for Delivery</option><option value="delivered">Delivered</option><option value="cancelled">Cancelled</option></select>
+          </div>
+          <div id="ordersList"></div>
+        </div>
+
+        <div class="panel">
+          <div class="section-title"><h2>Users & Access</h2></div>
+          <div class="access-grid">
+            <div>
+              <div class="small muted" style="margin-bottom:8px">Grant admin access to an existing account by email.</div>
+              <form id="grantAdminForm" class="inline-form">
+                <input id="grantAdminEmail" type="email" placeholder="customer@example.com" required>
+                <button class="btn btn-primary" type="submit">Grant Admin</button>
+              </form>
+            </div>
+            <div>
+              <div class="small muted" style="margin-bottom:8px">Search and manage active shop users.</div>
+              <input id="searchUsers" placeholder="Search by name, email, or phone...">
+            </div>
+          </div>
+          <div class="table-wrap" style="margin-top:14px">
+            <table class="table"><thead><tr><th>User</th><th>Role</th><th>Status</th><th>Joined</th><th>Actions</th></tr></thead><tbody id="usersTableBody"></tbody></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script src="js/products-catalog.js"></script>
+  <script src="js/admin.js"></script>
 </body>
 </html>

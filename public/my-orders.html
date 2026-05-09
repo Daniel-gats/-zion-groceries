@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>My Orders - Zion Groceries</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root{--green:#1f6f43;--bg:#f5f7f2;--card:#fff;--line:#dce6d9;--text:#173126;--muted:#6a7a71}*{box-sizing:border-box}body{margin:0;font-family:Poppins,sans-serif;background:var(--bg);color:var(--text)}.page{max-width:1180px;margin:0 auto;padding:24px 20px 40px}.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:20px}.top a{color:var(--green);text-decoration:none;font-weight:600}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 16px 40px rgba(18,72,43,.05)}input,select{padding:12px 13px;border:1px solid var(--line);border-radius:12px;font:inherit;background:#fff}textarea{font:inherit}.grow{flex:1}.order{margin-bottom:14px}.head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:10px}.muted{color:var(--muted)}.pill{padding:5px 10px;border-radius:999px;font-size:.78rem;font-weight:700}.pending{background:#fef3c7;color:#92400e}.confirmed{background:#dbeafe;color:#1d4ed8}.preparing{background:#e0e7ff;color:#4338ca}.delivery{background:#fce7f3;color:#9d174d}.delivered{background:#dcfce7;color:#166534}.cancelled{background:#fee2e2;color:#991b1b}.items{display:grid;gap:10px;margin:12px 0}.item{display:grid;grid-template-columns:54px 1fr auto;gap:12px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:14px}.item img{width:54px;height:54px;border-radius:12px;object-fit:cover;background:#eef2ea}.row{display:flex;justify-content:space-between;gap:10px;font-size:.92rem;padding:4px 0;flex-wrap:wrap}.stack{display:flex;gap:10px;flex-wrap:wrap}.btn{border:none;border-radius:999px;padding:11px 14px;font:inherit;font-weight:700;cursor:pointer;background:var(--green);color:#fff}.btn-outline{background:#fff;border:1px solid var(--line);color:var(--text)}.empty{text-align:center;padding:56px 20px}.timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:12px}.step{padding:10px;border:1px solid var(--line);border-radius:14px;font-size:.82rem}.step.active{border-color:var(--green);background:#effaf2}.step-time{display:block;color:var(--muted);font-size:.74rem;margin-top:4px}.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}.mini{padding:12px;border:1px solid var(--line);border-radius:14px;background:#fafcf9}.mini strong{display:block;margin-bottom:4px}.highlight{border-color:#1f6f43;box-shadow:0 0 0 2px rgba(31,111,67,.1)} @media(max-width:800px){.timeline,.info-grid{grid-template-columns:1fr 1fr}.top{flex-direction:column;align-items:flex-start}} @media(max-width:560px){.timeline,.info-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="top"><div><h1 style="margin:0">My Orders</h1><div class="muted">Track status, payment, and delivery estimates</div></div><div class="stack"><a href="index.html">Back to shop</a><a href="admin.html">Admin</a></div></div>
+    <div class="toolbar"><input id="searchOrders" class="grow" placeholder="Search order ID, phone, or item..."><select id="statusFilter"><option value="all">All statuses</option><option value="pending">Pending</option><option value="confirmed">Confirmed</option><option value="preparing">Preparing</option><option value="delivery">Out for delivery</option><option value="delivered">Delivered</option><option value="cancelled">Cancelled</option></select><button id="refreshBtn" class="btn btn-outline">Refresh</button></div>
+    <div id="ordersContainer"></div>
+  </div>
+  <script>
+    const IS_FILE_MODE = window.location.protocol === 'file:';
+    const API_URL = window.location.hostname === 'localhost' ? `${window.location.origin}/api` : '/api';
+    const storageKeys = ['g-man-orders','zion-orders'];
+    let orders = [];
+    const highlightedOrderId = new URLSearchParams(window.location.search).get('orderId');
+    const money = (value) => `KSh ${Number(value || 0).toLocaleString()}`;
+    const statusClass = (status) => ({ pending:'pending', confirmed:'confirmed', preparing:'preparing', delivery:'delivery', delivered:'delivered', cancelled:'cancelled' }[status] || 'pending');
+    const readLocalOrders = () => { for (const key of storageKeys) { try { const parsed = JSON.parse(localStorage.getItem(key) || 'null'); if (Array.isArray(parsed)) return parsed; } catch {} } return []; };
+    const mapStatus = (status) => ({ processing:'preparing', shipped:'delivery', on_the_way:'delivery' }[String(status || '').toLowerCase()] || String(status || 'pending').toLowerCase());
+    const formatTime = (value) => value ? new Date(value).toLocaleString() : 'Waiting';
+    const buildTimeline = (order) => {
+      const timeline = [
+        { step:'pending', label:'Received', at: order.createdAt || order.date },
+        { step:'confirmed', label:'Confirmed', at: order.confirmedAt },
+        { step:'preparing', label:'Preparing', at: order.preparingAt },
+        { step:'delivery', label:'On the way', at: order.deliveryStartedAt },
+        { step:'delivered', label:'Delivered', at: order.deliveredAt }
+      ];
+      const activeIndex = ['pending','confirmed','preparing','delivery','delivered'].indexOf(order.status);
+      return timeline.map((entry, index) => ({ ...entry, active: activeIndex >= index && order.status !== 'cancelled' }));
+    };
+    const normalizeOrder = (order) => ({
+      id: order.orderNumber || order.id,
+      backendId: order.id,
+      status: mapStatus(order.status),
+      paymentMethod: order.paymentMethod || 'cash',
+      paymentStatus: order.paymentStatus || 'pending',
+      paymentReference: order.paymentReference || '',
+      paymentConfirmedAt: order.paymentConfirmedAt || null,
+      total: Number(order.totalAmount ?? order.total ?? 0),
+      deliveryFee: Number(order.deliveryFee ?? 0),
+      estimatedDeliveryMinutes: Number(order.estimatedDeliveryMinutes ?? 0),
+      deliveryDistanceKm: Number(order.deliveryDistanceKm ?? 0),
+      deliveryMapUrl: order.deliveryMapUrl || '',
+      date: order.createdAt || order.date || new Date().toISOString(),
+      createdAt: order.createdAt || order.date || new Date().toISOString(),
+      confirmedAt: order.confirmedAt || null,
+      preparingAt: order.preparingAt || null,
+      deliveryStartedAt: order.deliveryStartedAt || null,
+      deliveredAt: order.deliveredAt || null,
+      cancelledAt: order.cancelledAt || null,
+      customer: {
+        name: order.userName || order.customer?.name || 'Customer',
+        phone: order.customerPhone || order.customer?.phone || '',
+        estate: order.customer?.estate || 'Crotonridge Estate',
+        section: order.customer?.section || String(order.deliveryAddress || order.customer?.hostel || '').replace(/^Crotonridge Estate,\s*/i, ''),
+        road: order.customer?.road || order.deliveryCity || '',
+        lane: order.customer?.lane || order.deliveryRoom || order.customer?.room || '',
+        notes: order.notes || order.customer?.notes || ''
+      },
+      items: (order.items || []).map(item => ({ productId: item.productId || item.id || null, name: item.productName || item.name, qty: item.quantity || item.qty || 1, price: Number(item.productPrice ?? item.price ?? 0), unit: item.unit || 'item', image: item.image || `https://placehold.co/108x108/e8f4ea/1f6f43?text=${encodeURIComponent(item.productName || item.name || 'Item')}` }))
+    });
+
+    async function fetchServerOrders() {
+      if (IS_FILE_MODE) return [];
+      const token = localStorage.getItem('token'); if (!token) return [];
+      const response = await fetch(`${API_URL}/orders/my-orders`, { headers: { Authorization: `Bearer ${token}` } });
+      if (!response.ok) return []; const data = await response.json(); return Array.isArray(data.orders) ? data.orders : [];
+    }
+
+    async function loadOrders() {
+      const localOrders = readLocalOrders();
+      const serverOrders = await fetchServerOrders();
+      const merged = [...localOrders];
+      const known = new Set(localOrders.map(order => String(order.orderNumber || order.id)));
+      serverOrders.forEach(order => {
+        const key = String(order.orderNumber || order.id);
+        if (!known.has(key)) merged.push(order);
+      });
+      orders = merged.map(normalizeOrder).sort((a,b) => new Date(b.date) - new Date(a.date));
+      renderOrders();
+    }
+
+    function renderOrders() {
+      const term = document.getElementById('searchOrders').value.trim().toLowerCase();
+      const filter = document.getElementById('statusFilter').value;
+      const list = orders.filter(order => {
+        const byStatus = filter === 'all' || order.status === filter;
+        const haystack = [order.id, order.customer.phone, order.customer.section, order.customer.road, order.customer.lane, order.paymentReference, ...order.items.map(item => item.name)].join(' ').toLowerCase();
+        return byStatus && (!term || haystack.includes(term));
+      });
+      const container = document.getElementById('ordersContainer');
+      if (!list.length) { container.innerHTML = `<div class="panel empty"><h3>No orders found</h3><p class="muted">Place an order or change your filters.</p><a href="index.html" class="btn">Start shopping</a></div>`; return; }
+      container.innerHTML = list.map(order => {
+        const timeline = buildTimeline(order);
+        const paymentDetail = order.paymentReference ? `Reference ${order.paymentReference}` : 'Reference not added yet';
+        const highlightClass = highlightedOrderId && String(highlightedOrderId) === String(order.id) ? 'highlight' : '';
+        return `<div class="panel order ${highlightClass}" id="order-${order.id}"><div class="head"><div><strong>${order.id}</strong><div class="muted">${new Date(order.date).toLocaleString()}</div></div><span class="pill ${statusClass(order.status)}">${order.status}</span></div><div class="items">${order.items.map(item => `<div class="item"><img src="${item.image}" onerror="this.onerror=null;this.src='https://placehold.co/108x108/e8f4ea/1f6f43?text=Item'"><div><strong>${item.name}</strong><div class="muted">Qty ${item.qty} • ${money(item.price)}</div></div><div><strong>${money(item.price * item.qty)}</strong></div></div>`).join('')}</div><div class="row"><span>Payment</span><span>${String(order.paymentMethod).toUpperCase()} • ${String(order.paymentStatus).replace(/_/g,' ')}</span></div><div class="row"><span>Payment Reference</span><span>${paymentDetail}</span></div><div class="row"><span>Delivery</span><span>${money(order.deliveryFee)}${order.deliveryDistanceKm ? ` • ${order.deliveryDistanceKm} km` : ''} • ETA ${order.estimatedDeliveryMinutes} min</span></div><div class="row"><span>Total</span><strong>${money(order.total)}</strong></div><div class="row"><span>Estate</span><span>${order.customer.estate}</span></div><div class="row"><span>Section</span><span>${order.customer.section || 'Not set'}</span></div><div class="row"><span>Road / Lane</span><span>${[order.customer.road, order.customer.lane].filter(Boolean).join(' • ') || 'Not set'}</span></div>${order.deliveryMapUrl ? `<div class="row"><span>Map</span><a href="${order.deliveryMapUrl}" target="_blank">Open route</a></div>` : ''}${order.customer.notes ? `<div class="row"><span>Order Note</span><span>${order.customer.notes}</span></div>` : ''}<div class="info-grid"><div class="mini"><strong>Payment Confirmed</strong><span class="muted">${formatTime(order.paymentConfirmedAt)}</span></div><div class="mini"><strong>Latest Update</strong><span class="muted">${formatTime(order.deliveredAt || order.deliveryStartedAt || order.preparingAt || order.confirmedAt || order.createdAt)}</span></div>${order.cancelledAt ? `<div class="mini"><strong>Cancelled At</strong><span class="muted">${formatTime(order.cancelledAt)}</span></div>` : ''}${order.deliveredAt ? `<div class="mini"><strong>Delivered At</strong><span class="muted">${formatTime(order.deliveredAt)}</span></div>` : ''}</div><div class="timeline">${timeline.map(step => `<div class="step ${step.active ? 'active' : ''}"><strong>${step.label}</strong><span class="step-time">${formatTime(step.at)}</span></div>`).join('')}</div><div class="stack" style="margin-top:12px"><button class="btn btn-outline" onclick="reorder('${order.id}')">Reorder</button>${['pending','confirmed'].includes(order.status) ? `<button class="btn" onclick="cancelOrder('${order.backendId || order.id}')">Cancel</button>` : ''}</div></div>`;
+      }).join('');
+      if (highlightedOrderId) document.getElementById(`order-${highlightedOrderId}`)?.scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+
+    window.reorder = (orderId) => {
+      const order = orders.find(item => String(item.id) === String(orderId));
+      if (!order) return;
+      const missingIds = order.items.some(item => !item.productId);
+      if (missingIds) {
+        alert('Some items in this older order can no longer be matched to live products. Please add them from the shop again.');
+        return;
+      }
+      const cart = order.items.map(item => ({ id: item.productId, productId: item.productId, name: item.name, price: item.price, quantity: item.qty, unit: item.unit || 'item', image: item.image }));
+      localStorage.setItem('zionCart', JSON.stringify(cart));
+      window.location.href = 'checkout.html';
+    };
+
+    window.cancelOrder = async (id) => {
+      if (IS_FILE_MODE) {
+        if (!confirm('Cancel this local order?')) return;
+        const nextOrders = readLocalOrders().map(order => String(order.id || order.orderNumber) === String(id) || String(order.orderNumber || order.id) === String(id) ? { ...order, status: 'cancelled', cancelledAt: new Date().toISOString() } : order);
+        storageKeys.forEach(key => localStorage.setItem(key, JSON.stringify(nextOrders)));
+        await loadOrders();
+        return;
+      }
+      if (!localStorage.getItem('token')) return alert('Login first to cancel this order.');
+      if (!confirm('Cancel this order?')) return;
+      const response = await fetch(`${API_URL}/orders/${id}`, { method:'DELETE', headers:{ Authorization:`Bearer ${localStorage.getItem('token')}` } });
+      const data = await response.json(); if (!response.ok) return alert(data.error || 'Failed to cancel order');
+      await loadOrders();
+    };
+
+    document.getElementById('searchOrders').addEventListener('input', renderOrders);
+    document.getElementById('statusFilter').addEventListener('change', renderOrders);
+    document.getElementById('refreshBtn').addEventListener('click', loadOrders);
+    window.addEventListener('DOMContentLoaded', loadOrders);
+  </script>
+</body>
+</html>

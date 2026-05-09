@@ -1,126 +1,242 @@
-# 🥬 G-man Groceries
+# Zion Groceries
 
-An online shop for fresh vegetables and fruits with WhatsApp ordering.
+Online grocery shop for fresh produce, customer checkout, order tracking, and admin product/order management.
 
-## Features
+Live site:
+`https://zion-groceries-azure.vercel.app/`
 
-### Customer Features
-- 🛒 Browse products by category (Vegetables, Fruits)
-- 🔍 Search products
-- 🛍️ Add to cart with quantity selection
-- 📱 Order via WhatsApp with one click
-- 💾 Cart persists in browser (localStorage)
-- 📱 Fully responsive design
+## Current Project Status
 
-### Admin Features
-- ➕ Add new products
-- ✏️ Edit existing products
-- 🗑️ Delete products
-- 📊 View statistics (total products, low stock items)
-- 🔍 Search products
+This project has been cleaned down to the runtime files only. Old setup notes, backups, seed SQL files, unused advert pages, and duplicate helpers were removed.
 
-## Quick Start
+The active app is an Express server deployed on Vercel. It serves static pages from `public/` and API routes from `server.js`, `routes/`, `middleware/`, and `lib/`.
 
-### Prerequisites
-- Node.js (v14 or higher)
-- npm
+## Main Features
 
-### Installation
-
-1. Clone or download this project
-2. Navigate to the project folder:
-   ```bash
-   cd zion-groceries
-   ```
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
-4. Start the server:
-   ```bash
-   npm start
-   ```
-5. Open your browser and visit:
-   - **Shop**: http://localhost:3000
-   - **Admin**: http://localhost:3000/admin
-
-## Configuration
-
-### WhatsApp Number
-The WhatsApp number is configured in `public/js/app.js`:
-```javascript
-const CONFIG = {
-    whatsappNumber: '254745562238', // Current WhatsApp number
-    currency: 'KSh'
-};
-```
-
-**Note**: Use international format without + or spaces (e.g., `254712345678` for Kenya)
-
-## Deployment
-
-### Deploy to Render (Free)
-
-1. Push your code to GitHub
-2. Go to [render.com](https://render.com) and sign up
-3. Click "New" → "Web Service"
-4. Connect your GitHub repository
-5. Configure:
-   - **Name**: zion-groceries
-   - **Runtime**: Node
-   - **Build Command**: `npm install`
-   - **Start Command**: `npm start`
-6. Click "Create Web Service"
-
-### Deploy to Railway (Free)
-
-1. Push your code to GitHub
-2. Go to [railway.app](https://railway.app) and sign up
-3. Click "New Project" → "Deploy from GitHub repo"
-4. Select your repository
-5. Railway will auto-detect Node.js and deploy
+- Customer shop with category filters, search, product cards, and cart.
+- Responsive mobile layout for phone screens.
+- Checkout page with order creation and confirmation flow.
+- Customer order tracking via `my-orders.html`.
+- Login/register/dashboard pages for customer accounts.
+- Admin panel for products, orders, reports, and stock alerts.
+- JSON file fallback storage for local development.
+- Optional PostgreSQL storage when `DATABASE_URL` is set.
+- M-Pesa route support and WhatsApp order confirmation support.
 
 ## Project Structure
 
-```
+```text
 zion-groceries/
-├── server.js              # Express server & API routes
-├── package.json           # Dependencies
+├── server.js
+├── package.json
+├── package-lock.json
+├── vercel.json
+├── README.md
+├── .env
+├── .env.example
 ├── data/
-│   └── products.json      # Product database
-├── public/
-│   ├── index.html         # Main shop page
-│   ├── admin.html         # Admin panel
-│   ├── css/
-│   │   └── styles.css     # Shop styles
-│   └── js/
-│       ├── app.js         # Shop functionality
-│       └── admin.js       # Admin functionality
-└── README.md
+│   ├── products.json
+│   ├── products-catalog.json is in public/
+│   ├── orders.json
+│   ├── users.json
+│   ├── reviews.json
+│   └── mpesa_transactions.json
+├── lib/
+│   └── storage.js
+├── middleware/
+│   └── auth.js
+├── routes/
+│   ├── auth.js
+│   ├── orders.js
+│   ├── reviews.js
+│   └── mpesa.js
+└── public/
+    ├── index.html
+    ├── admin.html
+    ├── login.html
+    ├── register.html
+    ├── dashboard.html
+    ├── checkout.html
+    ├── order-confirmation.html
+    ├── my-orders.html
+    ├── scan.html
+    ├── logo.svg
+    ├── products-catalog.json
+    ├── css/
+    │   └── styles.css
+    └── js/
+        ├── app.js
+        ├── admin.js
+        └── dashboard.js
 ```
 
-## API Endpoints
+## Local Development
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/products` | Get all products |
-| GET | `/api/products/:id` | Get single product |
-| POST | `/api/products` | Add new product |
-| PUT | `/api/products/:id` | Update product |
-| DELETE | `/api/products/:id` | Delete product |
+Install dependencies:
 
-## Technologies Used
+```bash
+npm install
+```
 
-- **Backend**: Node.js, Express
-- **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
-- **Database**: JSON file storage
-- **Icons**: Font Awesome
-- **Fonts**: Google Fonts (Poppins)
+Run the server:
 
-## License
+```bash
+npm start
+```
 
-MIT License - Feel free to use for your own projects!
+Open:
 
----
+```text
+http://localhost:3000/
+http://localhost:3000/admin
+```
 
-Made with ❤️ for G-man Groceries
+## Environment Variables
+
+The app loads `.env` through `dotenv`.
+
+Important variables:
+
+```text
+PORT=3000
+JWT_SECRET=...
+DATABASE_URL=...
+NODE_ENV=production
+MPESA_CONSUMER_KEY=...
+MPESA_CONSUMER_SECRET=...
+MPESA_PASSKEY=...
+MPESA_SHORTCODE=...
+MPESA_CALLBACK_URL=https://zion-groceries-azure.vercel.app/api/mpesa/callback
+MPESA_ENVIRONMENT=production
+SHOP_LOCATION_LABEL=Croton Ridge Estate, Kenyatta Road / Theta, Juja
+SHOP_LATITUDE=-1.1087
+SHOP_LONGITUDE=37.0719
+```
+
+If `DATABASE_URL` is not set or PostgreSQL is unavailable, the app falls back to JSON files in `data/`.
+
+Do not commit real production secrets. Use `.env.example` as the template.
+
+Check local M-Pesa readiness without printing secrets:
+
+```bash
+npm run check:mpesa-env
+```
+
+## API Routes
+
+Products:
+
+```text
+GET    /api/products
+GET    /api/products/:id
+POST   /api/products
+POST   /api/products/bulk
+PUT    /api/products/:id
+DELETE /api/products/:id
+```
+
+Auth:
+
+```text
+POST /api/auth/register
+POST /api/auth/login
+GET  /api/auth/profile
+PUT  /api/auth/profile
+```
+
+Orders:
+
+```text
+POST   /api/orders
+GET    /api/orders/my-orders
+GET    /api/admin/orders
+PUT    /api/orders/:id/status
+DELETE /api/orders/:id
+```
+
+Other:
+
+```text
+GET /api/health
+GET /api/products/stats/overview
+GET /api/admin/inventory-alerts
+GET /api/admin/reports/sales
+```
+
+## Active Frontend Pages
+
+- `/` -> customer shop
+- `/checkout.html` -> checkout form
+- `/order-confirmation.html` -> receipt/confirmation
+- `/my-orders.html` -> customer order tracking
+- `/login.html` -> login
+- `/register.html` -> registration
+- `/dashboard.html` -> customer dashboard
+- `/admin` or `/admin.html` -> admin panel
+- `/scan.html` -> QR scan landing page
+
+## Data Files
+
+Local JSON storage files:
+
+```text
+data/products.json
+data/orders.json
+data/users.json
+data/reviews.json
+data/mpesa_transactions.json
+```
+
+Static fallback product catalog:
+
+```text
+public/products-catalog.json
+```
+
+When updating products manually, keep `data/products.json` and `public/products-catalog.json` in sync if the static fallback is still needed.
+
+## Deployment
+
+Production deploys through Vercel using `vercel.json`.
+
+Deploy:
+
+```bash
+vercel deploy --prod --yes
+```
+
+The deployment should alias to:
+
+```text
+https://zion-groceries-azure.vercel.app/
+```
+
+## Verification
+
+Run syntax checks before deploying:
+
+```bash
+node --check server.js
+node --check public/js/app.js
+node --check public/js/admin.js
+node --check public/js/dashboard.js
+```
+
+Recommended live checks after deployment:
+
+```text
+/
+/api/health
+/api/products
+/checkout.html
+/admin
+```
+
+## Notes For Future Maintenance
+
+- Keep `public/css/styles.css` mobile-first and avoid fixed widths without `max-width` or responsive `clamp()`.
+- Keep product cards capped on small screens so the grid does not break phones.
+- Avoid adding large documentation dumps back into the root folder.
+- If temporary scripts or seed files are needed, place them in a clearly named temporary folder and remove them after use.
+- Keep `node_modules/` locally if you want immediate local runs; it does not need to be deployed manually.

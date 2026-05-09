@@ -1,159 +1,202 @@
 const express = require('express');
 const cors = require('cors');
-const fs = require('fs');
+const dotenv = require('dotenv');
 const path = require('path');
+const jwt = require('jsonwebtoken');
+const { authenticateToken, isAdmin, JWT_SECRET } = require('./middleware/auth');
+const {
+  initStorage,
+  getStorageMode,
+  getProducts,
+  getProductById,
+  getProductStats,
+  createProduct,
+  updateProduct,
+  bulkUpsertProducts,
+  deleteProduct,
+  getOrderStats,
+  getOrders,
+  getInventoryAlerts,
+  getSalesReport
+} = require('./lib/storage');
+
+dotenv.config();
+
+const authRoutes = require('./routes/auth');
+const orderRoutes = require('./routes/orders');
+const reviewRoutes = require('./routes/reviews');
+const mpesaRoutes = require('./routes/mpesa');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const publicPath = path.join(__dirname, 'public');
 
-// Middleware
 app.use(cors());
-app.use(express.json());
-app.use(express.static('public'));
+app.use(express.json({ limit: '2mb' }));
+app.use(express.static(publicPath));
 
-// Data file path
-const dataPath = path.join(__dirname, 'data', 'products.json');
+app.use('/api/auth', authRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/mpesa', mpesaRoutes);
 
-// Helper functions to read/write products
-const readProducts = () => {
-    try {
-        const data = fs.readFileSync(dataPath, 'utf8');
-        return JSON.parse(data);
-    } catch (error) {
-        console.error('Error reading products:', error.message);
-        return [];
+function requireAdminRequest(req, res) {
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) {
+    res.status(401).json({ error: 'Admin authentication required' });
+    return null;
+  }
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    if (!decoded.isAdmin) {
+      res.status(403).json({ error: 'Admin privileges required' });
+      return null;
     }
-};
+    return decoded;
+  } catch (error) {
+    res.status(403).json({ error: 'Invalid or expired admin token' });
+    return null;
+  }
+}
 
-const writeProducts = (products) => {
-    fs.writeFileSync(dataPath, JSON.stringify(products, null, 2));
-};
-
-// API Routes
-
-// Get all products
-app.get('/api/products', (req, res) => {
-    const products = readProducts();
+app.get('/api/products', async (req, res) => {
+  try {
+    const adminMode = req.query.admin === '1' || req.query.includeInactive === '1' || req.query.includeOutOfStock === '1';
+    if (adminMode && !requireAdminRequest(req, res)) {
+      return;
+    }
+    const products = await getProducts({
+      admin: adminMode,
+      includeInactive: adminMode && req.query.includeInactive === '1',
+      includeOutOfStock: adminMode && req.query.includeOutOfStock === '1',
+      category: req.query.category,
+      search: req.query.search
+    });
     res.json(products);
+  } catch (error) {
+    console.error('Fetch products error:', error);
+    res.status(500).json({ error: 'Failed to fetch products' });
+  }
 });
 
-// Get single product
-app.get('/api/products/:id', (req, res) => {
-    const products = readProducts();
-    const product = products.find(p => p.id === parseInt(req.params.id));
-    if (product) {
-        res.json(product);
-    } else {
-        res.status(404).json({ error: 'Product not found' });
-    }
+app.get('/api/products/stats/overview', authenticateToken, isAdmin, async (req, res) => {
+  try {
+    const [productStats, orderStats] = await Promise.all([getProductStats(), getOrderStats()]);
+    res.json({ ...productStats, ...orderStats });
+  } catch (error) {
+    console.error('Overview stats error:', error);
+    res.status(500).json({ error: 'Failed to fetch overview stats' });
+  }
 });
 
-// Add new product (Admin)
-app.post('/api/products', (req, res) => {
-    try {
-        if (!req.body.name || !req.body.price || !req.body.category) {
-            return res.status(400).json({ error: 'Name, price, and category are required' });
-        }
-        
-        const products = readProducts();
-        const newProduct = {
-            id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
-            name: req.body.name,
-            price: parseFloat(req.body.price),
-            category: req.body.category,
-            image: req.body.image || 'https://via.placeholder.com/200x200?text=Product',
-            unit: req.body.unit || 'kg',
-            stock: parseInt(req.body.stock) || 100,
-            description: req.body.description || '',
-            createdAt: new Date().toISOString()
-        };
-        products.push(newProduct);
-        writeProducts(products);
-        res.status(201).json(newProduct);
-    } catch (error) {
-        console.error('Error adding product:', error);
-        res.status(500).json({ error: 'Failed to add product' });
-    }
+app.get('/api/admin/inventory-alerts', authenticateToken, isAdmin, async (req, res) => {
+  try {
+    res.json(await getInventoryAlerts());
+  } catch (error) {
+    console.error('Inventory alerts error:', error);
+    res.status(500).json({ error: 'Failed to fetch inventory alerts' });
+  }
 });
 
-// Update product (Admin)
-app.put('/api/products/:id', (req, res) => {
-    try {
-        const products = readProducts();
-        const index = products.findIndex(p => p.id === parseInt(req.params.id));
-        if (index !== -1) {
-            products[index] = {
-                ...products[index],
-                name: req.body.name || products[index].name,
-                price: req.body.price !== undefined ? parseFloat(req.body.price) : products[index].price,
-                category: req.body.category || products[index].category,
-                image: req.body.image || products[index].image,
-                unit: req.body.unit || products[index].unit,
-                stock: req.body.stock !== undefined ? parseInt(req.body.stock) : products[index].stock,
-                description: req.body.description !== undefined ? req.body.description : products[index].description,
-                updatedAt: new Date().toISOString()
-            };
-            writeProducts(products);
-            res.json(products[index]);
-        } else {
-            res.status(404).json({ error: 'Product not found' });
-        }
-    } catch (error) {
-        console.error('Error updating product:', error);
-        res.status(500).json({ error: 'Failed to update product' });
-    }
+app.get('/api/admin/reports/sales', authenticateToken, isAdmin, async (req, res) => {
+  try {
+    res.json(await getSalesReport(req.query.range || '30d'));
+  } catch (error) {
+    console.error('Sales report error:', error);
+    res.status(500).json({ error: 'Failed to fetch sales report' });
+  }
 });
 
-// Delete product (Admin)
-app.delete('/api/products/:id', (req, res) => {
-    try {
-        const products = readProducts();
-        const index = products.findIndex(p => p.id === parseInt(req.params.id));
-        if (index !== -1) {
-            const deleted = products.splice(index, 1);
-            writeProducts(products);
-            res.json({ message: 'Product deleted', product: deleted[0] });
-        } else {
-            res.status(404).json({ error: 'Product not found' });
-        }
-    } catch (error) {
-        console.error('Error deleting product:', error);
-        res.status(500).json({ error: 'Failed to delete product' });
-    }
+app.get('/api/products/:id', async (req, res) => {
+  try {
+    const product = await getProductById(req.params.id, { includeInactive: req.query.includeInactive === '1' });
+    if (!product) return res.status(404).json({ error: 'Product not found' });
+    res.json(product);
+  } catch (error) {
+    console.error('Fetch product error:', error);
+    res.status(500).json({ error: 'Failed to fetch product' });
+  }
 });
 
-// Get products by category
-app.get('/api/products/category/:category', (req, res) => {
-    const products = readProducts();
-    const filtered = products.filter(p => 
-        p.category.toLowerCase() === req.params.category.toLowerCase()
-    );
-    res.json(filtered);
+app.post('/api/products', authenticateToken, isAdmin, async (req, res) => {
+  try {
+    const { name, price, category } = req.body;
+    if (!name || price === undefined || !category) return res.status(400).json({ error: 'Name, price, and category are required' });
+    const product = await createProduct(req.body);
+    res.status(201).json(product);
+  } catch (error) {
+    console.error('Create product error:', error);
+    res.status(500).json({ error: 'Failed to add product' });
+  }
 });
 
-// Serve main page
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+app.post('/api/products/bulk', authenticateToken, isAdmin, async (req, res) => {
+  try {
+    const items = Array.isArray(req.body.products) ? req.body.products : [];
+    if (!items.length) return res.status(400).json({ error: 'No products provided' });
+    const products = await bulkUpsertProducts(items);
+    res.json({ message: 'Bulk import complete', products, count: products.length });
+  } catch (error) {
+    console.error('Bulk import error:', error);
+    res.status(500).json({ error: 'Failed to bulk import products' });
+  }
 });
 
-// Serve admin page
-app.get('/admin', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+app.put('/api/products/:id', authenticateToken, isAdmin, async (req, res) => {
+  try {
+    const product = await updateProduct(req.params.id, req.body);
+    if (!product) return res.status(404).json({ error: 'Product not found' });
+    res.json(product);
+  } catch (error) {
+    console.error('Update product error:', error);
+    res.status(500).json({ error: 'Failed to update product' });
+  }
 });
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-    res.json({ status: 'ok', timestamp: new Date().toISOString() });
+app.delete('/api/products/:id', authenticateToken, isAdmin, async (req, res) => {
+  try {
+    const product = await deleteProduct(req.params.id);
+    if (!product) return res.status(404).json({ error: 'Product not found' });
+    res.json({ message: 'Product deleted', product });
+  } catch (error) {
+    console.error('Delete product error:', error);
+    res.status(500).json({ error: 'Failed to delete product' });
+  }
 });
 
-// 404 handler
-app.use((req, res) => {
-    res.status(404).json({ error: 'Route not found' });
+app.get('/api/admin/orders', authenticateToken, isAdmin, async (req, res) => {
+  try {
+    const orders = await getOrders({ isAdmin: true, status: req.query.status, search: req.query.search });
+    res.json({ orders });
+  } catch (error) {
+    console.error('Admin orders error:', error);
+    res.status(500).json({ error: 'Failed to fetch orders' });
+  }
 });
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`🥬 Zion Groceries server running on http://localhost:${PORT}`);
-    console.log(`📦 Admin panel available at http://localhost:${PORT}/admin`);
-    console.log(`🏥 Health check at http://localhost:${PORT}/health`);
+app.get('/', (req, res) => res.sendFile(path.join(publicPath, 'index.html')));
+app.get('/admin', (req, res) => res.sendFile(path.join(publicPath, 'admin.html')));
+
+app.get('/health', async (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString(), storage: await getStorageMode() });
 });
+
+app.get('/api/health', async (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString(), storage: await getStorageMode() });
+});
+
+app.use('/api', (req, res) => res.status(404).json({ error: 'API route not found' }));
+app.use((req, res) => res.status(404).sendFile(path.join(publicPath, 'index.html')));
+
+if (require.main === module) {
+  initStorage().finally(() => {
+    app.listen(PORT, () => {
+      console.log(`Zion Groceries server running on http://localhost:${PORT}`);
+      console.log(`Admin panel available at http://localhost:${PORT}/admin`);
+      console.log(`Health check at http://localhost:${PORT}/health`);
+    });
+  });
+}
+
+module.exports = app;

@@ -20,6 +20,10 @@
       "dest": "/server.js"
     },
     {
+      "src": "/(checkout|order-confirmation|my-orders)\\.html",
+      "dest": "/public/$1.html"
+    },
+    {
       "src": "/css/(.*)",
       "dest": "/public/css/$1"
     },
@@ -30,6 +34,10 @@
     {
       "src": "/logo.svg",
       "dest": "/public/logo.svg"
+    },
+    {
+      "src": "/(.*\\.(?:html|png|jpg|jpeg|webp|gif|svg|ico|json))",
+      "dest": "/public/$1"
     },
     {
       "src": "/",

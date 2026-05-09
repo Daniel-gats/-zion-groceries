@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - Crotonridge Mall</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root{--green:#166534;--green-dark:#101f18;--amber:#c7831f;--bg:#f7f8f5;--card:#fff;--line:#d8e1d7;--text:#172b22;--muted:#617066;--danger:#b42318;--soft:#f2f6f1}*{box-sizing:border-box}body{margin:0;font-family:Poppins,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}.page{max-width:1240px;margin:0 auto;padding:18px 18px 42px}.top{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;background:var(--green-dark);color:#fff;border-radius:16px;padding:18px 20px;margin-bottom:16px;box-shadow:0 14px 34px rgba(16,31,24,.14)}.top h1{font-size:clamp(1.5rem,4vw,2.2rem);letter-spacing:0;margin:0}.top .muted{color:rgba(255,255,255,.72)}.top a{color:#fff;text-decoration:none;font-weight:700;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);padding:10px 13px;border-radius:10px}.layout{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:16px;align-items:start}.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 0 rgba(16,31,24,.04);padding:18px}.layout>.panel:last-child{position:sticky;top:16px}.muted{color:var(--muted)}label{display:block;font-size:.78rem;font-weight:800;margin-bottom:6px;text-transform:uppercase;letter-spacing:.03em;color:#34483c}input,textarea,select{width:100%;padding:12px 12px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff;color:var(--text);outline:none}input:focus,textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(22,101,52,.1)}textarea{min-height:86px;resize:vertical}.grid{display:grid;gap:12px}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.btn{border:none;border-radius:10px;padding:13px 16px;font:inherit;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}.btn-primary{background:var(--green-dark);color:#fff}.btn-primary:hover{background:var(--green)}.btn-outline{background:#fff;border:1px solid var(--line);color:var(--green-dark)}.stack{display:flex;gap:10px;flex-wrap:wrap}.item{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:12px;background:#fbfcfa}.item img{width:56px;height:56px;border-radius:9px;object-fit:cover;background:#eef2ea}.item strong{font-size:.9rem}.notice{background:#eff7f1;border:1px solid #cfe7d4;color:#165a33;padding:12px;border-radius:10px;font-size:.88rem}.error{display:none;background:#fff1f2;border:1px solid #fecdd3;color:#9f1239;padding:12px;border-radius:10px;margin-bottom:14px}.summary{display:grid;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden}.row{display:flex;justify-content:space-between;gap:10px;padding:12px;background:#fff;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}.grand{font-size:1.14rem;font-weight:900;color:#fff;background:var(--green-dark)}.pay{border:1px solid var(--line);border-radius:12px;padding:13px;display:flex;gap:10px;align-items:flex-start;background:#fff}.pay+.pay{margin-top:8px}.pay:has(input:checked){border-color:var(--green);background:#f2f8f3}.pay input{width:auto;margin-top:4px;accent-color:var(--green)}.empty{text-align:center;padding:58px 20px}.eta{display:flex;gap:10px;align-items:center;padding:13px;border-radius:12px;background:#fff8eb;color:#8a4b08;border:1px solid #f4d19a}.eta i{color:var(--amber)}.location-card{border:1px solid var(--line);border-radius:12px;padding:13px;background:#fbfcfa}.location-card .btn{padding:10px 12px}.location-meta{font-size:.82rem;margin-top:8px;color:var(--muted)}#summaryList{max-height:420px;overflow:auto;padding-right:2px}.panel h3{font-size:1.05rem;margin:0 0 12px;color:var(--green-dark)}form:before{content:'Delivery details';display:block;font-size:1.08rem;font-weight:900;color:var(--green-dark);margin-bottom:2px}.layout>.panel:last-child:before{content:'Crotonridge basket';display:block;font-size:.78rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:4px}@media(max-width:980px){.layout{grid-template-columns:1fr}.layout>.panel:last-child{position:static;order:-1}}@media(max-width:640px){.page{padding:10px}.top{grid-template-columns:1fr;padding:15px;border-radius:12px}.two{grid-template-columns:1fr}.stack{display:grid}.btn{width:100%}.panel{padding:14px}.item{grid-template-columns:48px minmax(0,1fr);}.item>div:last-child{grid-column:2}.item img{width:48px;height:48px}}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="top"><div><h1 style="margin:0">Checkout</h1><div class="muted">Reliable checkout, delivery estimate, and payment instructions</div></div><a href="index.html">&larr; Back to shop</a></div>
+    <div id="emptyState" class="panel empty" style="display:none"><h2>Your cart is empty</h2><p class="muted">Add some items before checking out.</p><a class="btn btn-primary" href="index.html">Continue Shopping</a></div>
+    <div id="checkoutLayout" class="layout" style="display:none">
+      <div class="panel">
+        <div id="errorBox" class="error"></div>
+        <form id="checkoutForm" class="grid">
+          <div><label>Full Name</label><input id="checkoutName" required></div>
+          <div><label>Phone Number</label><input id="checkoutPhone" required placeholder="0712345678"></div>
+          <div class="notice"><strong>Delivery estate:</strong> Crotonridge Estate</div>
+          <div class="grid">
+            <div><label>Section</label><input id="checkoutSection" required placeholder="e.g. Section A"></div>
+            <div class="two"><div><label>Road</label><input id="checkoutRoad" required placeholder="e.g. Ridge Road"></div><div><label>Lane</label><input id="checkoutLane" required placeholder="e.g. Lane 4"></div></div>
+          </div>
+          <div><label>Delivery Notes</label><textarea id="checkoutNotes" placeholder="House number, gate color, landmark, or preferred delivery time"></textarea></div>
+          <div class="location-card">
+            <div style="font-weight:700;margin-bottom:6px">Live Delivery Location</div>
+            <div class="muted" style="font-size:.9rem;margin-bottom:10px">Use GPS if you want to pin your exact location inside Crotonridge Estate.</div>
+            <div class="stack"><button class="btn btn-outline" type="button" id="useLocationBtn"><i class="fas fa-location-crosshairs"></i> Use My Location</button><a class="btn btn-outline" id="mapPreviewLink" href="#" target="_blank" style="display:none">Preview Map</a></div>
+            <div class="location-meta" id="locationMeta">Location not added yet. Crotonridge estate delivery fee will be used.</div>
+          </div>
+          <div class="eta"><i class="fas fa-truck"></i><div><strong id="etaText">Delivery estimate pending</strong><div class="small muted" id="feeText">Delivery fee will update when you enter your area.</div></div></div>
+          <div>
+            <div style="font-weight:700;margin-bottom:10px">Payment Method</div>
+            <label class="pay"><input type="radio" name="payment" value="mpesa" checked><div><strong>M-Pesa</strong><div class="muted">Pay to <strong>0745562238</strong> after placing the order. Use the order number as your reference.</div></div></label>
+            <label class="pay"><input type="radio" name="payment" value="cod"><div><strong>Cash on Delivery</strong><div class="muted">Pay when your groceries arrive.</div></div></label>
+          </div>
+          <div class="notice">Your order is saved immediately through the shop backend. After that, WhatsApp opens with the full order summary for confirmation.</div>
+          <div class="stack"><a class="btn btn-outline" href="index.html">Keep Shopping</a><button id="placeOrderBtn" class="btn btn-primary" type="submit">Place Order</button></div>
+        </form>
+      </div>
+      <div class="panel">
+        <h3 style="margin-top:0">Order Summary</h3>
+        <div id="summaryList" class="grid" style="margin-bottom:14px"></div>
+        <div class="summary">
+          <div class="row"><span>Items</span><span id="summaryItems">0</span></div>
+          <div class="row"><span>Subtotal</span><span id="summarySubtotal">KSh 0</span></div>
+          <div class="row"><span>Delivery</span><span id="summaryDelivery">KSh 0</span></div>
+          <div class="row grand"><span>Total</span><span id="summaryTotal">KSh 0</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const IS_FILE_MODE = window.location.protocol === 'file:';
+    const API_URL = window.location.hostname === 'localhost' ? `${window.location.origin}/api` : '/api';
+    const CONFIG = { currency: 'KSh', mpesaPayNumber: '0745562238', whatsappNumber: '254745562238' };
+    let cart = [];
+    let deliveryFee = 0;
+    let estimatedDeliveryMinutes = 0;
+    let deliveryDistanceKm = 0;
+    let customerLatitude = null;
+    let customerLongitude = null;
+    let deliveryMapUrl = '';
+    const SHOP_LOCATION = { label: 'Croton Ridge Estate, Kenyatta Road / Theta, Juja', lat: -1.1087, lng: 37.0719 };
+
+    const readJson = (key, fallback = []) => { try { const parsed = JSON.parse(localStorage.getItem(key) || 'null'); return parsed ?? fallback; } catch { return fallback; } };
+    const money = (value) => `${CONFIG.currency} ${Number(value || 0).toLocaleString()}`;
+    const showError = (message) => { const box = document.getElementById('errorBox'); box.textContent = message; box.style.display = 'block'; };
+    const clearError = () => { const box = document.getElementById('errorBox'); box.textContent = ''; box.style.display = 'none'; };
+    const phoneOk = (value) => /^(0|\+254)[17]\d{8}$/.test(String(value || '').replace(/\s/g, ''));
+    const getOrderItems = () => cart.map(item => ({ productId: item.productId || item.id, quantity: item.quantity }));
+    const saveLocalOrder = (order) => { const keys = ['g-man-orders','zion-orders']; let all = readJson(keys[0], []); all = [order, ...all.filter(item => item.id !== order.id)]; keys.forEach(key => localStorage.setItem(key, JSON.stringify(all))); localStorage.setItem('lastOrderId', order.id); };
+    const saveReceipt = (receipt) => localStorage.setItem('lastOrderReceipt', JSON.stringify(receipt));
+
+    function distanceKm(fromLat, fromLng, toLat, toLng) {
+      const earthRadiusKm = 6371;
+      const dLat = (Number(toLat) - Number(fromLat)) * Math.PI / 180;
+      const dLng = (Number(toLng) - Number(fromLng)) * Math.PI / 180;
+      const a = Math.sin(dLat / 2) ** 2 + Math.cos(Number(fromLat) * Math.PI / 180) * Math.cos(Number(toLat) * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+      return earthRadiusKm * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    function quoteByDistance(lat, lng) {
+      const km = Math.max(0, distanceKm(SHOP_LOCATION.lat, SHOP_LOCATION.lng, lat, lng));
+      let fee = 0;
+      if (km <= 1) fee = 30;
+      else if (km <= 3) fee = 60;
+      else if (km <= 5) fee = 100;
+      else fee = 150 + Math.ceil(km - 5) * 25;
+      return { fee, eta: Math.max(20, Math.round(18 + km * 6)), distanceKm: Number(km.toFixed(2)), label: `${Number(km.toFixed(2))} km from shop` };
+    }
+
+    function calcDeliveryMeta(area) {
+      if (customerLatitude !== null && customerLongitude !== null) return quoteByDistance(customerLatitude, customerLongitude);
+      const value = String(area || '').toLowerCase();
+      if (!value) return { fee: 40, eta: 30, label: 'Crotonridge Estate' };
+      return { fee: 40, eta: 30, label: 'Crotonridge Estate' };
+    }
+
+    function updateDeliveryPreview() {
+      const section = document.getElementById('checkoutSection').value.trim();
+      const road = document.getElementById('checkoutRoad').value.trim();
+      const lane = document.getElementById('checkoutLane').value.trim();
+      const estateLocation = ['Crotonridge Estate', section, road, lane].filter(Boolean).join(', ');
+      const meta = calcDeliveryMeta(estateLocation);
+      deliveryFee = meta.fee; estimatedDeliveryMinutes = meta.eta; deliveryDistanceKm = meta.distanceKm || 0;
+      document.getElementById('etaText').textContent = `${meta.label} • ETA about ${meta.eta} minutes`;
+      document.getElementById('feeText').textContent = customerLatitude !== null ? `Distance-priced delivery from ${SHOP_LOCATION.label}: ${money(meta.fee)}` : `Delivery fee inside Crotonridge Estate: ${money(meta.fee)}`;
+      renderSummary();
+    }
+
+    function setCustomerLocation(lat, lng) {
+      customerLatitude = Number(lat);
+      customerLongitude = Number(lng);
+      deliveryMapUrl = `https://www.google.com/maps/dir/?api=1&origin=${SHOP_LOCATION.lat},${SHOP_LOCATION.lng}&destination=${customerLatitude},${customerLongitude}&travelmode=driving`;
+      const meta = quoteByDistance(customerLatitude, customerLongitude);
+      const link = document.getElementById('mapPreviewLink');
+      link.href = deliveryMapUrl;
+      link.style.display = 'inline-flex';
+      document.getElementById('locationMeta').textContent = `Location added: ${meta.distanceKm} km from shop. Delivery will be ${money(meta.fee)}.`;
+      updateDeliveryPreview();
+    }
+
+    function useCurrentLocation() {
+      if (!navigator.geolocation) return showError('Your browser does not support live location. Type your area and we will use area pricing.');
+      const button = document.getElementById('useLocationBtn');
+      button.disabled = true; button.textContent = 'Getting location...';
+      navigator.geolocation.getCurrentPosition((position) => {
+        setCustomerLocation(position.coords.latitude, position.coords.longitude);
+        button.disabled = false; button.innerHTML = '<i class="fas fa-location-crosshairs"></i> Update Location';
+      }, () => {
+        button.disabled = false; button.innerHTML = '<i class="fas fa-location-crosshairs"></i> Use My Location';
+        showError('Location permission was not granted. You can still order with area-based delivery fee.');
+      }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 });
+    }
+
+    function renderSummary() {
+      const subtotal = cart.reduce((sum, item) => sum + Number(item.price || 0) * Number(item.quantity || 0), 0);
+      document.getElementById('summaryList').innerHTML = cart.map(item => `<div class="item"><img src="${item.image || `https://placehold.co/108x108/e8f4ea/1f6f43?text=${encodeURIComponent(item.name || 'Item')}`}" onerror="this.onerror=null;this.src='https://placehold.co/108x108/e8f4ea/1f6f43?text=Item'"><div><strong>${item.name}</strong><div class="muted">Qty ${item.quantity} • ${money(item.price)} / ${item.unit || 'item'}</div></div><div><strong>${money(Number(item.price) * Number(item.quantity))}</strong></div></div>`).join('');
+      document.getElementById('summaryItems').textContent = `${cart.reduce((sum, item) => sum + Number(item.quantity || 0), 0)} item(s)`;
+      document.getElementById('summarySubtotal').textContent = money(subtotal);
+      document.getElementById('summaryDelivery').textContent = money(deliveryFee);
+      document.getElementById('summaryTotal').textContent = money(subtotal + deliveryFee);
+    }
+
+    function buildWhatsAppMessage(order) {
+      const lines = ['New Order from Zion Groceries', '', `Order: ${order.id}`, `Customer: ${order.customer.name}`, `Phone: ${order.customer.phone}`, `Estate: Crotonridge Estate`, `Section: ${order.customer.section || order.customer.hostel || ''}`, `Road: ${order.customer.road || ''}`, `Lane: ${order.customer.lane || order.customer.room || ''}`, `Payment: ${String(order.paymentMethod).toUpperCase()}`, `Delivery Fee: ${money(order.deliveryFee)}`, `Distance: ${order.deliveryDistanceKm || 0} km`, `ETA: ${order.estimatedDeliveryMinutes} minutes`, '', 'Items:'];
+      order.items.forEach((item, index) => lines.push(`${index + 1}. ${item.name} x${item.qty}`, `   ${money(item.price)} each • ${money(item.price * item.qty)}`));
+      lines.push('', `Total: ${money(order.total)}`);
+      if (order.deliveryMapUrl) lines.push(`Map: ${order.deliveryMapUrl}`);
+      if (order.customer.notes) lines.push(`Notes: ${order.customer.notes}`);
+      return lines.join('\n');
+    }
+
+    async function requestMpesaPayment(order, phone) {
+      if (IS_FILE_MODE || order.paymentMethod !== 'mpesa') return null;
+      const response = await fetch(`${API_URL}/mpesa/stkpush`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(localStorage.getItem('token') ? { Authorization: `Bearer ${localStorage.getItem('token')}` } : {})
+        },
+        body: JSON.stringify({ orderId: order.backendId || order.id, phoneNumber: phone, amount: order.total })
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        return { ok: false, error: data.error || data.details || 'M-Pesa request failed' };
+      }
+      return { ok: true, checkoutRequestId: data.checkoutRequestId, customerMessage: data.customerMessage || 'STK push sent. Check your phone.' };
+    }
+
+    async function submitCheckout(event) {
+      event.preventDefault(); clearError();
+      const name = document.getElementById('checkoutName').value.trim();
+      const phone = document.getElementById('checkoutPhone').value.trim();
+      const section = document.getElementById('checkoutSection').value.trim();
+      const road = document.getElementById('checkoutRoad').value.trim();
+      const lane = document.getElementById('checkoutLane').value.trim();
+      const notes = document.getElementById('checkoutNotes').value.trim();
+      const paymentMethod = document.querySelector('input[name="payment"]:checked')?.value === 'cod' ? 'cash' : 'mpesa';
+      if (!name || !phone || !section || !road || !lane) return showError('Fill in your name, phone number, section, road, and lane.');
+      if (!phoneOk(phone)) return showError('Enter a valid phone number like 0712345678.');
+      const button = document.getElementById('placeOrderBtn'); button.disabled = true; button.textContent = 'Placing Order...';
+      const subtotal = cart.reduce((sum, item) => sum + Number(item.price || 0) * Number(item.quantity || 0), 0);
+      const estate = 'Crotonridge Estate';
+      const deliveryAddress = `${estate}, ${section}`;
+      const deliveryNotes = [`Road: ${road}`, `Lane: ${lane}`, notes].filter(Boolean).join(' | ');
+      const payload = { items: getOrderItems(), deliveryAddress, deliveryCity: road, deliveryRoom: lane, customerName: name, customerPhone: phone, notes: deliveryNotes, paymentMethod, customerLatitude, customerLongitude, deliveryFee, estimatedDeliveryMinutes, subtotalAmount: subtotal, totalAmount: subtotal + deliveryFee };
+      try {
+        const lineItems = cart.map(item => ({ id: item.productId || item.id, name: item.name, qty: item.quantity, price: Number(item.price), unit: item.unit || 'item', image: item.image || '' }));
+        if (IS_FILE_MODE) {
+          const orderId = `LOCAL-${Date.now()}`;
+          const now = new Date().toISOString();
+          const localOrder = { id: orderId, orderNumber: orderId, date: now, createdAt: now, status: 'pending', paymentMethod, paymentStatus: paymentMethod === 'mpesa' ? 'pending' : 'cash_on_delivery', deliveryFee, estimatedDeliveryMinutes, deliveryDistanceKm, customerLatitude, customerLongitude, deliveryMapUrl, total: subtotal + deliveryFee, totalAmount: subtotal + deliveryFee, items: lineItems, customer: { name, phone, estate, section, road, lane, notes }, userName: name, customerPhone: phone, deliveryAddress, deliveryCity: road, deliveryRoom: lane, notes: deliveryNotes };
+          const receipt = { orderId, createdAt: now, customer: localOrder.customer, paymentMethod, paymentStatus: localOrder.paymentStatus, paymentReference: '', deliveryFee, estimatedDeliveryMinutes, deliveryDistanceKm, customerLatitude, customerLongitude, deliveryMapUrl, subtotal, total: subtotal + deliveryFee, items: lineItems };
+          saveLocalOrder(localOrder);
+          saveReceipt(receipt);
+          [['customerName', name], ['customerPhone', phone], ['crotonSection', section], ['crotonRoad', road], ['crotonLane', lane], ['hostel', section], ['room', lane]].forEach(([key, value]) => localStorage.setItem(key, value));
+          localStorage.setItem('zionCart', '[]');
+          window.open(`https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(buildWhatsAppMessage(localOrder))}`, '_blank');
+          window.location.href = `order-confirmation.html?orderId=${encodeURIComponent(orderId)}&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&section=${encodeURIComponent(section)}&road=${encodeURIComponent(road)}&lane=${encodeURIComponent(lane)}&items=${lineItems.reduce((sum, item) => sum + Number(item.qty || 0), 0)}&total=${receipt.total}&payment=${encodeURIComponent(paymentMethod)}&deliveryFee=${encodeURIComponent(receipt.deliveryFee)}&eta=${encodeURIComponent(receipt.estimatedDeliveryMinutes)}`;
+          return;
+        }
+        const response = await fetch(`${API_URL}/orders`, { method: 'POST', headers: { 'Content-Type': 'application/json', ...(localStorage.getItem('token') ? { Authorization: `Bearer ${localStorage.getItem('token')}` } : {}) }, body: JSON.stringify(payload) });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to place order');
+        const serverOrder = data.order;
+        const localOrder = { id: serverOrder.orderNumber || `ORD-${serverOrder.id}`, backendId: serverOrder.id, date: serverOrder.createdAt, status: serverOrder.status, paymentMethod: serverOrder.paymentMethod, paymentStatus: serverOrder.paymentStatus, deliveryFee: serverOrder.deliveryFee ?? deliveryFee, estimatedDeliveryMinutes: serverOrder.estimatedDeliveryMinutes ?? estimatedDeliveryMinutes, deliveryDistanceKm: serverOrder.deliveryDistanceKm ?? deliveryDistanceKm, customerLatitude: serverOrder.customerLatitude ?? customerLatitude, customerLongitude: serverOrder.customerLongitude ?? customerLongitude, deliveryMapUrl: serverOrder.deliveryMapUrl || deliveryMapUrl, total: Number(serverOrder.totalAmount), items: lineItems, customer: { name, phone, estate, section, road, lane, notes } };
+        const mpesaResult = await requestMpesaPayment(localOrder, phone);
+        if (mpesaResult?.ok) {
+          localOrder.paymentReference = mpesaResult.checkoutRequestId;
+          localOrder.mpesaCheckoutRequestId = mpesaResult.checkoutRequestId;
+        } else if (mpesaResult?.error) {
+          localOrder.adminNote = `M-Pesa STK not sent: ${mpesaResult.error}`;
+        }
+        const receipt = { orderId: localOrder.id, createdAt: localOrder.date, customer: localOrder.customer, paymentMethod: localOrder.paymentMethod, paymentStatus: localOrder.paymentStatus, paymentReference: mpesaResult?.checkoutRequestId || serverOrder.paymentReference || '', deliveryFee: Number(localOrder.deliveryFee), estimatedDeliveryMinutes: Number(localOrder.estimatedDeliveryMinutes), deliveryDistanceKm: Number(localOrder.deliveryDistanceKm || 0), customerLatitude: localOrder.customerLatitude, customerLongitude: localOrder.customerLongitude, deliveryMapUrl: localOrder.deliveryMapUrl, subtotal: Number(subtotal), total: Number(localOrder.total), items: lineItems, mpesaMessage: mpesaResult?.customerMessage || '', mpesaError: mpesaResult && !mpesaResult.ok ? mpesaResult.error : '' };
+        saveLocalOrder(localOrder);
+        saveReceipt(receipt);
+        [['customerName', name], ['customerPhone', phone], ['crotonSection', section], ['crotonRoad', road], ['crotonLane', lane], ['hostel', section], ['room', lane]].forEach(([key, value]) => localStorage.setItem(key, value));
+        localStorage.setItem('zionCart', '[]');
+        if (!mpesaResult?.ok) window.open(`https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(buildWhatsAppMessage(localOrder))}`, '_blank');
+        window.location.href = `order-confirmation.html?orderId=${encodeURIComponent(localOrder.id)}&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&section=${encodeURIComponent(section)}&road=${encodeURIComponent(road)}&lane=${encodeURIComponent(lane)}&items=${lineItems.reduce((sum, item) => sum + Number(item.qty || 0), 0)}&total=${receipt.total}&payment=${encodeURIComponent(localOrder.paymentMethod)}&deliveryFee=${encodeURIComponent(receipt.deliveryFee)}&eta=${encodeURIComponent(receipt.estimatedDeliveryMinutes)}`;
+      } catch (error) {
+        showError(error.message || 'Failed to place order');
+        button.disabled = false; button.textContent = 'Place Order';
+      }
+    }
+
+    function init() {
+      cart = readJson('zionCart', []);
+      if (!Array.isArray(cart) || !cart.length) { document.getElementById('emptyState').style.display = 'block'; return; }
+      document.getElementById('checkoutLayout').style.display = 'grid';
+      document.getElementById('checkoutName').value = localStorage.getItem('customerName') || '';
+      document.getElementById('checkoutPhone').value = localStorage.getItem('customerPhone') || '';
+      document.getElementById('checkoutSection').value = localStorage.getItem('crotonSection') || localStorage.getItem('hostel') || '';
+      document.getElementById('checkoutRoad').value = localStorage.getItem('crotonRoad') || '';
+      document.getElementById('checkoutLane').value = localStorage.getItem('crotonLane') || localStorage.getItem('room') || '';
+      renderSummary(); updateDeliveryPreview();
+      ['checkoutSection','checkoutRoad','checkoutLane'].forEach(id => document.getElementById(id).addEventListener('input', updateDeliveryPreview));
+      document.getElementById('useLocationBtn').addEventListener('click', useCurrentLocation);
+      document.getElementById('checkoutForm').addEventListener('submit', submitCheckout);
+    }
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-[
+window.ZION_PRODUCTS_CATALOG = [
   {
     "id": 87,
     "name": "Acai Berries",
@@ -3776,4 +3776,4 @@
     "stock": 25,
     "description": "Green zucchini"
   }
-]
+];
